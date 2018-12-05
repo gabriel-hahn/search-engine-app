@@ -13,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabriel-hahn/search-engine.git"
+    "url": "git+https://github.com/gabriel-hahn/search-engine-app.git"
   },
   "keywords": [],
   "author": "Gabriel Hahn Schaeffer <gabriel_hahn@hotmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gabriel-hahn/search-engine/issues"
+    "url": "https://github.com/gabriel-hahn/search-engine-app/issues"
   },
   "nyc": {
     "reporter": [
@@ -30,7 +30,7 @@
       "tests/**"
     ]
   },
-  "homepage": "https://github.com/gabriel-hahn/search-engine#readme",
+  "homepage": "https://github.com/gabriel-hahn/search-engine-app#readme",
   "devDependencies": {
     "babel-cli": "6.24.1",
     "babel-loader": "7.0.0",
