@@ -1,2 +1,3 @@
-# search-engine-app
-Application which uses Search Engine API - Like Google. Pure JavaScript and Unit Tests.
+## Search Engine App
+
+Application which uses Search Engine API (https://github.com/gabriel-hahn/search-engine). Pure JavaScript and Unit Tests.
