@@ -1,8 +1,8 @@
 {
-  "name": "search-engine",
+  "name": "search-engine-app",
   "version": "1.0.0",
   "description": "A webpage like Google to search links",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server",
