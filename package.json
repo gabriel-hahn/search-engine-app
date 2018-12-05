@@ -1,0 +1,53 @@
+{
+  "name": "search-engine",
+  "version": "1.0.0",
+  "description": "A webpage like Google to search links",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server",
+    "test": "./node_modules/.bin/mocha tests/**/*.spec.js --require babel-register",
+    "test:tdd": "./node_modules/.bin/mocha tests/**/*.spec.js --require babel-register --watch",
+    "test:coverage": "nyc npm test",
+    "coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriel-hahn/search-engine.git"
+  },
+  "keywords": [],
+  "author": "Gabriel Hahn Schaeffer <gabriel_hahn@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gabriel-hahn/search-engine/issues"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "tests/**"
+    ]
+  },
+  "homepage": "https://github.com/gabriel-hahn/search-engine#readme",
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-loader": "7.0.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "1.3.2",
+    "babel-register": "6.24.0",
+    "chai": "3.5.0",
+    "coveralls": "2.13.0",
+    "husky": "0.11.9",
+    "jsdom": "9.4.1",
+    "mocha": "3.2.0",
+    "nyc": "10.2.0",
+    "sinon": "2.1.0",
+    "sinon-chai": "3.2.0",
+    "sinon-stub-promise": "4.0.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Doodle</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <div class="headerContent">
+                <div class="logoContainer">
+                    <a href="../index.html">
+                        <img src="../assets/images/doodleLogo.png">
+                    </a>
+                </div>
+                <div class="searchContainer">
+                    <form action="views/search.html" method="GET">
+                        <div class="searchBarContainer">
+                            <input type="text" class="searchBox" name="term">
+                            <button class="searchButton">
+                                <img src="../assets/images/icons/search.png">
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tabsContainer">
+                <ul class="tabList">
+                    <li class="active" id="sitesLink">
+                        <a href>Sites</a>
+                    </li>
+                    <li id="imagesLink">
+                        <a href>Images</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mainResultsSection">
+            <p class="resultsCount"></p>
+        </div>
+    </div>
+
+    <script src="../dist/bundle.js"></script>
+</body>
+
+</html>
