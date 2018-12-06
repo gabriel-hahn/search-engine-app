@@ -1,5 +1,5 @@
 // Needs polyfill because I used async functions.
-/* import 'babel-polyfill';
+import 'babel-polyfill';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -56,4 +56,4 @@ describe('Search', () => {
             expect(requests.length).to.be.eq(2);
         });
     });
-}); */
+}); 
