@@ -12,8 +12,6 @@ export default class LinksController {
 
         //Social medias needs a authentication in most of time, so the project needs to ignore links that contains these words.
         this._socialNetworks = ['instagram', 'facebook', 'pinterest', 'linkedin'];
-
-        //this.startEvents();
     }
 
     //Site that will be crowling.

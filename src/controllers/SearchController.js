@@ -8,22 +8,9 @@ export default class SearchController {
         this._searchLinkSites = document.getElementById('sitesLink');
         this._searchLinkImages = document.getElementById('imagesLink');
 
-        //this.startEvents();
-        this.searchLinks(true);
-    }
-
-    changeLinkSelection(isSites) {
-        if (isSites) {
-            if (![...this._searchLinkSites.classList].includes('active')) {
-                this._searchLinkSites.classList.add('active');
-                this._searchLinkImages.classList.remove('active');
-            }
-        }
-        else {
-            if (![...this._searchLinkImages.classList].includes('active')) {
-                this._searchLinkSites.classList.remove('active');
-                this._searchLinkImages.classList.add('active');
-            }
+        document.onload = () => {
+            this.startEvents();
+            this.changeLinkSelection(true);
         }
     }
 
@@ -39,6 +26,21 @@ export default class SearchController {
             this.changeLinkSelection(false);
             this.searchLinks(false);
         });
+    }
+
+    changeLinkSelection(isSites) {
+        if (isSites) {
+            if (![...this._searchLinkSites.classList].includes('active')) {
+                this._searchLinkSites.classList.add('active');
+                this._searchLinkImages.classList.remove('active');
+            }
+        }
+        else {
+            if (![...this._searchLinkImages.classList].includes('active')) {
+                this._searchLinkSites.classList.remove('active');
+                this._searchLinkImages.classList.add('active');
+            }
+        }
     }
 
     searchLinks(isSites) {

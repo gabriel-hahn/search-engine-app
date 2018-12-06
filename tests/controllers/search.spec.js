@@ -51,9 +51,9 @@ describe('Search', () => {
     });
 
     describe('Request methods', () => {
-        it('Should call request twice', () => {
+        it('Should call request once', () => {
             search.searchLinks(true);
-            expect(requests.length).to.be.eq(2);
+            expect(requests.length).to.be.eq(1);
         });
     });
 }); 
