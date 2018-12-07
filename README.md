@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/gabriel-hahn/search-engine-app.svg?branch=master)](https://travis-ci.com/gabriel-hahn/search-engine-app) [![Coverage Status](https://coveralls.io/repos/github/gabriel-hahn/search-engine-app/badge.svg?branch=master)](https://coveralls.io/github/gabriel-hahn/search-engine-app?branch=master)
 
-Application which uses Search Engine API (https://github.com/gabriel-hahn/search-engine). Pure JavaScript and Unit Tests.
+Application which uses [Search Engine API](https://github.com/gabriel-hahn/search-engine). Pure JavaScript and Unit Tests.
 
 - Vanilla JS.
 - Unit Tests.
