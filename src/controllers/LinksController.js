@@ -125,7 +125,7 @@ export default class LinksController {
         let newData = { url, title, description, keywords };
 
         //Verify if the url already exist on db.
-        RequestUtil.post(`${ConfigUtil..concat('/siteByUrl')}`, { url }).then(response => {
+        RequestUtil.post(`${apiUrlSite.concat('/siteByUrl')}`, { url }).then(response => {
             if (JSON.parse(response).length === 0) {
                 RequestUtil.post(apiUrlSite, newData).then(data => {
                     console.log('URL added');
