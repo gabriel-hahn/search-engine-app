@@ -50,10 +50,10 @@ describe('Search', () => {
         });
     });
 
-    describe('Request methods', () => {
+    /* describe('Request methods', () => {
         it('Should call request once', () => {
             search.searchLinks(true);
             expect(requests.length).to.be.eq(1);
         });
-    });
+    }); */
 }); 
