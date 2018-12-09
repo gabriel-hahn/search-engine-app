@@ -1,6 +1,5 @@
 import RequestUtil from '../utils/RequestUtil';
-
-let urlApiData = 'http://localhost:9090/api/';
+import ConfigUtil from '../utils/ConfigUtil';
 
 export default class SearchController {
 
@@ -8,24 +7,27 @@ export default class SearchController {
         this._searchLinkSites = document.getElementById('sitesLink');
         this._searchLinkImages = document.getElementById('imagesLink');
 
-        document.onload = () => {
-            this.startEvents();
-            this.changeLinkSelection(true);
-        }
+        this.startEvents();
+
+        this.searchLinks(true);
     }
 
     startEvents() {
-        this._searchLinkSites.addEventListener('click', e => {
-            e.preventDefault();
-            this.changeLinkSelection(true);
-            this.searchLinks(true);
-        });
+        window.onload = () => {
+            this._searchLinkSites.addEventListener('click', e => {
+                e.preventDefault();
+                this.changeLinkSelection(true);
+                this.searchLinks(true);
+            });
 
-        this._searchLinkImages.addEventListener('click', e => {
-            e.preventDefault();
-            this.changeLinkSelection(false);
-            this.searchLinks(false);
-        });
+            this._searchLinkImages.addEventListener('click', e => {
+                e.preventDefault();
+                this.changeLinkSelection(false);
+                this.searchLinks(false);
+            });
+
+            this.changeLinkSelection(true);
+        }
     }
 
     changeLinkSelection(isSites) {
@@ -44,11 +46,11 @@ export default class SearchController {
     }
 
     searchLinks(isSites) {
-        let url = new URL(window.location.href);
-        let term = url.searchParams.get('term');
+        let url = window.location.href ? new URL(window.location.href) : null;
+        let term = url ? url.searchParams.get('term') : '';
 
         //Get all links or images about the term searched.
-        RequestUtil.get(urlApiData.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
+        RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
             let response = JSON.parse(data);
             this.setCountResults(response.length);
             console.log(response);

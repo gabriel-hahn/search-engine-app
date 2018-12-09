@@ -1,7 +1,8 @@
 import RequestUtil from '../utils/RequestUtil';
+import ConfigUtil from '../utils/ConfigUtil';
 
-let apiUrlSite = 'http://localhost:9090/api/site';
-let apiUrlImage = 'http://localhost:9090/api/image';
+let apiUrlSite = ConfigUtil.DEFAULT_API.concat('site');
+let apiUrlImage = ConfigUtil.DEFAULT_API.concat('image');
 
 export default class LinksController {
 
@@ -124,7 +125,7 @@ export default class LinksController {
         let newData = { url, title, description, keywords };
 
         //Verify if the url already exist on db.
-        RequestUtil.post(`${apiUrlSite.concat('/siteByUrl')}`, { url }).then(response => {
+        RequestUtil.post(`${ConfigUtil..concat('/siteByUrl')}`, { url }).then(response => {
             if (JSON.parse(response).length === 0) {
                 RequestUtil.post(apiUrlSite, newData).then(data => {
                     console.log('URL added');
