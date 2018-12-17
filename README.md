@@ -1,6 +1,6 @@
 ## Search Engine App
 
-[![Build Status](https://travis-ci.com/gabriel-hahn/search-engine-app.svg?branch=master)](https://travis-ci.com/gabriel-hahn/search-engine-app) [![Coverage Status](https://coveralls.io/repos/github/gabriel-hahn/search-engine-app/badge.svg?branch=master)](https://coveralls.io/github/gabriel-hahn/search-engine-app?branch=master)
+[![Build Status](https://travis-ci.com/gabriel-hahn/search-engine-app.svg?branch=master)](https://travis-ci.com/gabriel-hahn/search-engine-app) [![Coverage Status](https://coveralls.io/repos/github/gabriel-hahn/search-engine-app/badge.svg?branch=master)](https://coveralls.io/github/gabriel-hahn/search-engine-app?branch=master) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Bugs](https://img.shields.io/github/issues/gabriel-hahn/search-engine-app/bug.svg)](https://github.com/mariorodeghiero/git-issue-react-electronjs/issues?utf8=?&q=is%3Aissue+is%3Aopen+label%3Abug) [![The MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 Application which uses [Search Engine API](https://github.com/gabriel-hahn/search-engine). Pure JavaScript and Unit Tests.
 
