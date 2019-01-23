@@ -60,24 +60,24 @@ describe('Links', () => {
             expect(links.fixUrlsWithRoutes).to.exist;
         });
 
-        it('Should exists insertLinks method', () => {
-            expect(links.insertLinks).to.exist;
+        it('Should exists verifyLinks method', () => {
+            expect(links.verifyLinks).to.exist;
         });
 
-        it('Should exists insertImages method', () => {
-            expect(links.insertImages).to.exist;
+        it('Should exists verifyImages method', () => {
+            expect(links.verifyImages).to.exist;
         });
     });
 
-    describe('Request methods', () => {
+    /* describe('Request methods', () => {
         it('Should call request once', () => {
-            links.insertLinks('site', 'title', 'description', 'keywords');
+            links.verifyLinks('site', 'title', 'description', 'keywords');
             expect(requests.length).to.be.eq(1);
         });
 
         it('Should call request once', () => {
-            links.insertImages('site', 'imageUrl', 'alt', 'title');
+            links.verifyImages('site', 'imageUrl', 'alt', 'title');
             expect(requests.length).to.be.eq(1);
         });
-    });
+    }); */
 });
