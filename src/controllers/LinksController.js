@@ -1,6 +1,7 @@
 import RequestUtil from '../utils/RequestUtil';
 import ConfigUtil from '../utils/ConfigUtil';
 
+// API REST paths to each type of data.
 let apiUrlSite = ConfigUtil.DEFAULT_API.concat('site');
 let apiUrlImage = ConfigUtil.DEFAULT_API.concat('image');
 
@@ -15,26 +16,43 @@ export default class LinksController {
         this._socialNetworks = ['instagram', 'facebook', 'pinterest', 'linkedin'];
     }
 
-    //Site that will be crowling.
+    /**
+     * Website that will be crawled. 
+     */
     startEvents() {
         this.getLinks('https://www.uol.com.br/', 'https://www.uol.com.br', 0);
     }
 
+    /**
+     * Get Meta tags from current DOM object.
+     */
     getMetaTags() {
         return this._currentDom.getElementsByTagName('meta');
     }
 
+    /**
+     * Get Title tags from current DOM object.
+     */
     getTitleTags() {
         return this._currentDom.getElementsByTagName('head')[0].getElementsByTagName('title');
     }
 
+    /**
+     * Get Image tags from current DOM object.
+     */
     getImagesTags() {
         return [...this._currentDom.getElementsByTagName('img')];
     }
 
-    //Get the links from href attributes throuth a URL.
-    //In this file, I used async/await only to make the code more easier to read.
-    //The performance isn't a critical field in this moment, because this file will be run once to each site that I'd crowling. POST functions are using asynchronous methods to best performance :)
+    /**
+     * Get the links from href attributes throuth a URL.
+     * In this file, I used async/await only to make the code more easier to read.
+     * The performance isn't a critical field in this moment, because this file will be run once to each site that I'd crawling. POST functions are using asynchronous methods to best performance :)
+     * 
+     * @param {URL that will be crawled} url 
+     * @param {Current host (domain)} host 
+     * @param {Current depth of crawling} currentDepth 
+     */
     async getLinks(url, host, currentDepth) {
 
         //Verify if the href already exists in crawled list and add it.
@@ -55,7 +73,7 @@ export default class LinksController {
             let description = '';
             let keyword = '';
 
-            //If description and keyword tags don't exist, the url will be insert too, but it's more harder to appear when user will use the project and search a site.
+            //If description and keyword tags don't exist, the url will be insert too, but it's more harder to appear when the user will use the project and search a site.
             if (tags.length > 0) {
                 description = [...tags].filter(tag => (tag.attributes['name'] && tag.attributes['name'].nodeValue === 'description'));
                 description = description && description[0] ? description[0].content : '';
@@ -65,13 +83,13 @@ export default class LinksController {
             }
 
             //After insert the site in DB, do the same things with 'children' urls.
-            this.insertLinks(url, title, description, keyword);
+            this.verifyLinks(url, title, description, keyword);
 
             //Get images from website
             let images = this.getImagesTags();
             images.forEach(image => {
                 if (image.dataset && image.dataset.src) {
-                    this.insertImages(url, image.dataset.src, image.alt, image.title);
+                    this.verifyImages(url, image.dataset.src, image.alt, image.title);
                 }
             });
 
@@ -82,12 +100,12 @@ export default class LinksController {
             //Get the child links that will be crawling.
             let childLinksToSearch = linksFixed.filter(link => link.href !== url);
 
-            //To control the depth of links inside a webpage, the count of layers that crawling method will search.
+            //To control the depth of links inside a webpage, the count of layers that crawling method will search inside each URL.
             currentDepth++;
 
             if (currentDepth <= this._depth) {
                 childLinksToSearch.forEach(link => {
-                    if (!this._alreadyCrawled.includes(link.href) && !link.href.startsWith('http://localhost:8080' && !this.getNotSocialNetworkUrl(link.href))) {
+                    if (!this._alreadyCrawled.includes(link.href) && !link.href.startsWith('http://localhost:8080') && this.getNotSocialNetworkUrl(link.href)) {
                         this.getLinks(link.href, link.host, currentDepth);
                     }
                 });
@@ -95,18 +113,31 @@ export default class LinksController {
         }
     }
 
-    //Get the DOM from a URL.
+    /**
+     * Get DOM object from a URL.
+     * 
+     * @param {URL that I want to get DOM object} url 
+     */
     async getDOMByURL(url) {
         let response = await RequestUtil.get(url);
         return new DOMParser().parseFromString(response, 'text/html');
     }
 
-    //Return if in the url exists a name from a social network, that probably will throw a error because the crawling method doesn't have a authentication from it;
+    /**
+     * Return if in the url exists a name from a social network, that probably will throw a error because the crawling method doesn't have a authentication for it.
+     * 
+     * @param {URL of a site that probably will be crawled} href
+     */
     getNotSocialNetworkUrl(href) {
         return this._socialNetworks.filter(socialName => href.indexOf(socialName) > -1) == [];
     }
 
-    //Fix links that contains routes, like /about. For this case, needs to put the correct base URL.
+    /**
+     * Fix links that contains routes, like /about. For this case, needs to put the correct base URL.
+     * 
+     * @param {Links to be fixed} links
+     * @param {Current host} host
+     */
     fixUrlsWithRoutes(links, host) {
         return links.map(link => {
             if (link.href.startsWith(window.location.href)) {
@@ -121,33 +152,52 @@ export default class LinksController {
         });
     }
 
-    insertLinks(url, title, description, keywords) {
+    /**
+     * Verify if the URL already exists in database.
+     * 
+     * @param {Site of URL} url
+     * @param {Title of site} title
+     * @param {Description of site} description
+     * @param {Keywords of site} keywords
+     */
+    verifyLinks(url, title, description, keywords) {
         let newData = { url, title, description, keywords };
 
-        //Verify if the url already exist on db.
         RequestUtil.post(`${apiUrlSite.concat('/siteByUrl')}`, { url }).then(response => {
-            if (JSON.parse(response).length === 0) {
-                RequestUtil.post(apiUrlSite, newData).then(data => {
-                    console.log('URL added');
-                }).catch(err => {
-                    console.error(err);
-                });
-            }
+            insert(response, newData, true);
         });
     }
 
-    insertImages(siteUrl, imageUrl, alt, title) {
+    /**
+     * Verify if the image already exists in database.
+     * 
+     * @param {Site that contains the url image} siteUrl
+     * @param {Image URL} imageUrl
+     * @param {Alt of the image} alt
+     * @param {Title of the image} title
+     */
+    verifyImages(siteUrl, imageUrl, alt, title) {
         let newData = { siteUrl, imageUrl, alt, title };
 
-        //Verify if the imageUrl already exist on db.
         RequestUtil.post(`${apiUrlImage.concat('/imageByUrl')}`, { imageUrl }).then(response => {
-            if (JSON.parse(response).length === 0) {
-                RequestUtil.post(apiUrlImage, newData).then(data => {
-                    console.log('Image added');
-                }).catch(err => {
-                    console.error(err);
-                });
-            }
+            insert(response, newData, false);
         });
+    }
+
+    /**
+     * Send data to API, to save the new link.
+     * 
+     * @param {Response of verify methods} response
+     * @param {Data to save} newData
+     * @param {If the URL is a link of a site or a image} isLink     
+     */
+    insert(response, isLink) {
+        if (JSON.parse(response).length === 0) {
+            RequestUtil.post(isLink ? apiUrlSite : apiUrlImage, newData).then(data => {
+                console.log('URL added');
+            }).catch(err => {
+                console.error(err);
+            });
+        }
     }
 }
