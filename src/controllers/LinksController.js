@@ -70,17 +70,9 @@ export default class LinksController {
             //Get description and keywords from site.
             let tags = this.getMetaTags();
 
-            let description = '';
-            let keyword = '';
-
             //If description and keyword tags don't exist, the url will be insert too, but it's more harder to appear when the user will use the project and search a site.
-            if (tags.length > 0) {
-                description = [...tags].filter(tag => (tag.attributes['name'] && tag.attributes['name'].nodeValue === 'description'));
-                description = description && description[0] ? description[0].content : '';
-
-                keyword = [...tags].filter(tag => (tag.attributes['name'] && tag.attributes['name'].nodeValue === 'keywords'));
-                keyword = keyword && keyword[0] ? keyword[0].content.split(',').map(key => key.trim()).join(',') : '';
-            }
+            let description = this.getDescriptionByTag(tags);
+            let keyword = this.getKeywordByTag(tags);
 
             //After insert the site in DB, do the same things with 'children' urls.
             this.verifyLinks(url, title, description, keyword);
@@ -110,6 +102,30 @@ export default class LinksController {
                     }
                 });
             }
+        }
+    }
+
+    /**
+     * Return keyword found by tags.
+     * 
+     * @param {Tags from DOM object} tags 
+     */
+    getKeywordByTag(tags) {
+        if (tags.length > 0) {
+            var keyword = [...tags].filter(tag => (tag.attributes['name'] && tag.attributes['name'].nodeValue === 'keywords'));
+            return keyword && keyword[0] ? keyword[0].content.split(',').map(key => key.trim()).join(',') : '';
+        }
+    }
+
+    /**
+     * Return description found by tags.
+     * 
+     * @param {Tags from DOM object} tags 
+     */
+    getDescriptionByTag(tags) {
+        if (tags.length > 0) {
+            var description = [...tags].filter(tag => (tag.attributes['name'] && tag.attributes['name'].nodeValue === 'description'));
+            return description && description[0] ? description[0].content : '';
         }
     }
 
