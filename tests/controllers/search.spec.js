@@ -50,10 +50,48 @@ describe('Search', () => {
         });
     });
 
-    /* describe('Request methods', () => {
+    /*
+    describe('Tabs behavior', () => {
+        it('Site tab should has click event', () => {
+        
+        });
+        
+        it('Image tab should has click event', () => {
+        
+        });
+        
+        it('Should activate Site tab', () => {
+            search.changeLinkSelection(true);
+        });
+        
+        it('Should activate Image tab', () => {
+            search.changeLinkSelection(false);
+        });
+    });
+    
+    describe('Request methods', () => {
         it('Should call request once', () => {
             search.searchLinks(true);
             expect(requests.length).to.be.eq(1);
         });
-    }); */
+    });
+    
+    describe('Count method', () => {
+        it('Should set count correctly', () => {
+        
+        });
+        
+        it('Should set count results to 0', () => {
+                        
+        });
+        
+        it('Should set count results to 3', () => {
+                        
+        });
+        
+        it('Should set count results to 22', () => {
+                        
+        });
+    });
+    */
 }); 
