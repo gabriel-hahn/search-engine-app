@@ -1,6 +1,5 @@
 // Needs polyfill because I used async functions.
 import RequestUtil from '../../src/utils/RequestUtil';
-import ConfigUtil from '../../src/utils/ConfigUtil';
 
 import 'babel-polyfill';
 import chai, { expect } from 'chai';
@@ -35,26 +34,25 @@ describe('Search', () => {
         }
     ];
 
-    let sites = [
-        {
-            "url": "http://www.test-gabriel.com",
-            "title": "Gabriel Test",
-            "description": "Gabriel Unit test",
-            "keywords": "gabriel,test,site,mock",
-            "clicks": 1
-        },
-        {
-            "url": "http://www.test2-gabriel.com",
-            "title": "Gabriel Test 2",
-            "description": "Gabriel Unit test 2",
-            "keywords": "gabriel,test,site,mock,2",
-            "clicks": 13
-        }
-    ];
-
     beforeEach(() => {
         jsdom.env({
-            url: 'http://localhost:8080?term=Dog', 'html': '<html><head><body><p class="resultsCount"></p></body></head></html>', onload: function (window) {
+            url: 'http://localhost:8080?term=Dog', 'html': `<html>
+                <head></head>
+                <body>
+                    <p class="resultsCount"></p>
+                    <div class="tabsContainer">
+                        <ul class="tabList">
+                            <li class="active" id="sitesLink">
+                                <a href>Sites</a>
+                            </li>
+                            <li id="imagesLink">
+                                <a href>Images</a>
+                            </li>
+                        </ul>
+                    </div>
+                </body>
+            </html>`,
+            onload: function (window) {
                 global.window = window;
                 global.document = window.document;
 
@@ -123,22 +121,17 @@ describe('Search', () => {
         });
     });
 
-    /*
     describe('Tabs behavior', () => {
-        it('Site tab should has click event', () => {
-        
-        });
-        
-        it('Image tab should has click event', () => {
-        
-        });
-        
         it('Should activate Site tab', () => {
             search.changeLinkSelection(true);
+            expect(search._searchLinkSites.classList.value).to.be.eq('active');
+            expect(search._searchLinkImages.classList.value).to.be.eq('');
         });
-        
+
         it('Should activate Image tab', () => {
-            search.changeLinkSelection(false);
+            search.changeLinkSelection();
+            expect(search._searchLinkImages.classList.value).to.be.eq('active');
+            expect(search._searchLinkSites.classList.value).to.be.eq('');
         });
-    });*/
+    });
 }); 
