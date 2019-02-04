@@ -15,6 +15,8 @@ describe('Search', () => {
     let search;
     let requests;
 
+    let URL_DOG = 'http://localhost:8080?term=Dog';
+
     let images = [
         {
             "siteUrl": "http://www.test.com.br",
@@ -36,7 +38,7 @@ describe('Search', () => {
 
     beforeEach(() => {
         jsdom.env({
-            url: 'http://localhost:8080?term=Dog', 'html': `<html>
+            url: URL_DOG, 'html': `<html>
                 <head></head>
                 <body>
                     <p class="resultsCount"></p>
@@ -138,6 +140,12 @@ describe('Search', () => {
             search.changeLinkSelection();
             expect(search._searchLinkImages.classList.value).to.be.eq('active');
             expect(search._searchLinkSites.classList.value).to.be.eq('');
+        });
+    });
+
+    describe ('Get term', () => {
+        it ('Should return Dog', () => {
+            expect(search.getTerm()).to.be.eq('Dog');
         });
     });
 }); 
