@@ -100,6 +100,12 @@ describe('Search', () => {
             search.searchLinks(true);
             expect(requests.length).to.be.eq(1);
         });
+
+        it('Should call request twice', () => {
+            search.searchLinks(true);
+            search.searchLinks(false);
+            expect(requests.length).to.be.eq(2);
+        });
     });
 
     describe('List of results', () => {
