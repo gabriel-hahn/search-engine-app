@@ -50,24 +50,24 @@ describe('Search', () => {
             "keywords": "gabriel,test,site,mock,2",
             "clicks": 13
         }
-    ]
+    ];
 
     beforeEach(() => {
         jsdom.env({
             url: 'http://localhost:8080?term=Dog', 'html': '<html><head><body><p class="resultsCount"></p></body></head></html>', onload: function (window) {
                 global.window = window;
                 global.document = window.document;
+
+                global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
+                requests = [];
+
+                global.XMLHttpRequest.onCreate = function (xhr) {
+                    requests.push(xhr);
+                };
+
+                search = new SearchController();
             }
         });
-
-        global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
-        requests = [];
-
-        global.XMLHttpRequest.onCreate = function (xhr) {
-            requests.push(xhr);
-        };
-
-        search = new SearchController();
     });
 
     afterEach(() => {
@@ -104,25 +104,6 @@ describe('Search', () => {
         });
     });
 
-    /*
-    describe('Tabs behavior', () => {
-        it('Site tab should has click event', () => {
-        
-        });
-        
-        it('Image tab should has click event', () => {
-        
-        });
-        
-        it('Should activate Site tab', () => {
-            search.changeLinkSelection(true);
-        });
-        
-        it('Should activate Image tab', () => {
-            search.changeLinkSelection(false);
-        });
-    });*/
-
     describe('List of results', () => {
         it('Should set resuls correctly - 2 items', () => {
             sinon.stub(RequestUtil, 'get').resolves(JSON.stringify(images));
@@ -141,4 +122,23 @@ describe('Search', () => {
             expect(search.setCountResults(3)).to.be.eq(3);
         });
     });
+
+    /*
+    describe('Tabs behavior', () => {
+        it('Site tab should has click event', () => {
+        
+        });
+        
+        it('Image tab should has click event', () => {
+        
+        });
+        
+        it('Should activate Site tab', () => {
+            search.changeLinkSelection(true);
+        });
+        
+        it('Should activate Image tab', () => {
+            search.changeLinkSelection(false);
+        });
+    });*/
 }); 
