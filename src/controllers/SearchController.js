@@ -4,12 +4,17 @@ import ConfigUtil from '../utils/ConfigUtil';
 export default class SearchController {
 
     constructor() {
+        this._results = [];
+
         this._searchLinkSites = document.getElementById('sitesLink');
         this._searchLinkImages = document.getElementById('imagesLink');
 
-        this.startEvents();
+        this.startEvents = this.startEvents.bind(this);
+        this.changeLinkSelection = this.changeLinkSelection.bind(this);
+        this.searchLinks = this.searchLinks.bind(this);
+        this.setCountResults = this.setCountResults.bind(this);
 
-        this.searchLinks(true);
+        this.startEvents();
     }
 
     startEvents() {
@@ -52,13 +57,14 @@ export default class SearchController {
         //Get all links or images about the term searched.
         RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
             let response = JSON.parse(data);
-            this.setCountResults(response.length);
-            console.log(response);
+            this._results = response;
+            this.setCountResults(response.length);            
         });
     }
 
     setCountResults(count) {
         let countEl = document.getElementsByClassName('resultsCount');
         countEl[0].innerHTML = `${count} results found`;
+        return count;
     }
 }
