@@ -2,12 +2,9 @@
 import RequestUtil from '../../src/utils/RequestUtil';
 
 import 'babel-polyfill';
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import { jsdom } from 'jsdom';
-
-chai.use(sinonChai);
 
 import SearchController from '../../src/controllers/SearchController';
 
@@ -143,8 +140,8 @@ describe('Search', () => {
         });
     });
 
-    describe ('Get term', () => {
-        it ('Should return Dog', () => {
+    describe('Get term', () => {
+        it('Should return Dog', () => {
             expect(search.getTerm()).to.be.eq('Dog');
         });
     });

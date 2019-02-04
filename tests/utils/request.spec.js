@@ -1,10 +1,7 @@
 // Needs polyfill because I used async functions.
 import 'babel-polyfill';
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-
-chai.use(sinonChai);
 
 import RequestUtil from '../../src/utils/RequestUtil';
 
