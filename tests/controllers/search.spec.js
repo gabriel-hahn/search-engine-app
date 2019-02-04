@@ -18,43 +18,47 @@ describe('Search', () => {
 
     let images = [
         {
-            siteUrl: 'http://www.test.com.br',
-            imageUrl: 'http://www.test.com.br/image.jpg',
-            alt: 'Test',
-            title: 'Image Title Test',
-            clicks: 0,
-            broken: false
+            "siteUrl": "http://www.test.com.br",
+            "imageUrl": "http://www.test.com.br/image.jpg",
+            "alt": "Test",
+            "title": "Image Title Test",
+            "clicks": 0,
+            "broken": false
         },
         {
-            siteUrl: 'http://www.test2.com.br',
-            imageUrl: 'http://www.test2.com.br/image2.jpg',
-            alt: 'Test 2',
-            title: 'Image Title Test 2',
-            clicks: 3,
-            broken: false
+            "siteUrl": "http://www.test2.com.br",
+            "imageUrl": "http://www.test2.com.br/image2.jpg",
+            "alt": "Test 2",
+            "title": "Image Title Test 2",
+            "clicks": 3,
+            "broken": false
         }
     ];
 
     let sites = [
         {
-            url: 'http://www.test-gabriel.com',
-            title: 'Gabriel Test',
-            description: 'Gabriel Unit test',
-            keywords: 'gabriel,test,site,mock',
-            clicks: 1
+            "url": "http://www.test-gabriel.com",
+            "title": "Gabriel Test",
+            "description": "Gabriel Unit test",
+            "keywords": "gabriel,test,site,mock",
+            "clicks": 1
         },
         {
-            url: 'http://www.test2-gabriel.com',
-            title: 'Gabriel Test 2',
-            description: 'Gabriel Unit test 2',
-            keywords: 'gabriel,test,site,mock,2',
-            clicks: 13
+            "url": "http://www.test2-gabriel.com",
+            "title": "Gabriel Test 2",
+            "description": "Gabriel Unit test 2",
+            "keywords": "gabriel,test,site,mock,2",
+            "clicks": 13
         }
     ]
 
     beforeEach(() => {
-        global.document = jsdom('');
-        global.window = document.defaultView;
+        jsdom.env({
+            url: 'http://localhost:8080?term=Dog', 'html': '<html><head><body><p class="resultsCount"></p></body></head></html>', onload: function (window) {
+                global.window = window;
+                global.document = window.document;
+            }
+        });
 
         global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
         requests = [];
@@ -72,13 +76,16 @@ describe('Search', () => {
     });
 
     describe('Smoke tests', () => {
-        //jsdom();
         it('Should exists changeLinkSelection method', () => {
             expect(search.changeLinkSelection).to.exist;
         });
 
         it('Should exists startEvents method', () => {
             expect(search.startEvents).to.exist;
+        });
+
+        it('Should exists getTerm method', () => {
+            expect(search.getTerm).to.exist;
         });
 
         it('Should exists searchLinks method', () => {
@@ -118,21 +125,20 @@ describe('Search', () => {
 
     describe('List of results', () => {
         it('Should set resuls correctly - 2 items', () => {
-            var fake = sinon.fake.returns(images);
-            sinon.replace(RequestUtil, 'get', fake);
-            search.searchLinks();
-            expect(search._results).to.be.eq(images);
+            sinon.stub(RequestUtil, 'get').resolves(JSON.stringify(images));
+            search.searchLinks().then(r => {
+                expect(r).to.be.eql(images);
+            });
         });
     });
 
     describe('Count method', () => {
-        jsdom();
         it('Should set count results to 2', () => {
-            //expect(search.setCountResults(2)).to.be.eq(2);
+            expect(search.setCountResults(2)).to.be.eq(2);
         });
 
         it('Should set count results to 3', () => {
-            //expect(search.setCountResults(3)).to.be.eq(3);
+            expect(search.setCountResults(3)).to.be.eq(3);
         });
     });
 }); 

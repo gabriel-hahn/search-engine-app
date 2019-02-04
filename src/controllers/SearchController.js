@@ -4,13 +4,12 @@ import ConfigUtil from '../utils/ConfigUtil';
 export default class SearchController {
 
     constructor() {
-        this._results = [];
-
         this._searchLinkSites = document.getElementById('sitesLink');
         this._searchLinkImages = document.getElementById('imagesLink');
 
         this.startEvents = this.startEvents.bind(this);
         this.changeLinkSelection = this.changeLinkSelection.bind(this);
+        this.getTerm = this.getTerm.bind(this);
         this.searchLinks = this.searchLinks.bind(this);
         this.setCountResults = this.setCountResults.bind(this);
 
@@ -50,15 +49,19 @@ export default class SearchController {
         }
     }
 
-    searchLinks(isSites) {
+    getTerm() {
         let url = window.location.href ? new URL(window.location.href) : null;
-        let term = url ? url.searchParams.get('term') : '';
+        return url ? url.searchParams.get('term') : '';
+    }
+
+    searchLinks(isSites) {
+        let term = this.getTerm();
 
         //Get all links or images about the term searched.
-        RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
             let response = JSON.parse(data);
-            this._results = response;
-            this.setCountResults(response.length);            
+            this.setCountResults(response.length);
+            return response;
         });
     }
 
