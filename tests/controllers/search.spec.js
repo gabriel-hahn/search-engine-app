@@ -33,12 +33,29 @@ describe('Search', () => {
         }
     ];
 
+    let sites = [
+        {
+            "url": "http://www.test.com.br",
+            "title": "Title test",
+            "description": "Description test",
+            "keywords": "test,gabriel,search,engine",
+            "clicks": 2
+        },
+        {
+            "url": "http://www.test2.com.br",
+            "title": "Title 2 test",
+            "description": "Description test 2",
+            "keywords": "test,2",
+            "clicks": 3
+        }
+    ]
+
     beforeEach(() => {
         jsdom.env({
             url: URL_DOG, 'html': `<html>
                 <head></head>
                 <body>
-                    <p class="resultsCount"></p>
+                    <input type="text" class="searchBox" name="term" value="">
                     <div class="tabsContainer">
                         <ul class="tabList">
                             <li class="active" id="sitesLink">
@@ -48,6 +65,9 @@ describe('Search', () => {
                                 <a href>Images</a>
                             </li>
                         </ul>
+                    </div>
+                    <div class="mainResultsSection">
+                        <p class="resultsCount"></p>
                     </div>
                 </body>
             </html>`,
@@ -91,6 +111,10 @@ describe('Search', () => {
 
         it('Should exists setCountResults method', () => {
             expect(search.setCountResults).to.exist;
+        });
+
+        it('Should exists includeSiteResults method', () => {
+            expect(search.includeSiteResults).to.exist;
         });
     });
 
@@ -144,5 +168,12 @@ describe('Search', () => {
         it('Should return Dog', () => {
             expect(search.getTerm()).to.be.eq('Dog');
         });
+    });
+
+    describe('Append results', () => {
+        /*it('Should insert all site results', () => {
+            search.includeSiteResults(sites);
+            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+        });*/
     });
 }); 
