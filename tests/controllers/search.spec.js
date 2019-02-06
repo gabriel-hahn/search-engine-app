@@ -160,6 +160,12 @@ describe('Search', () => {
 
     describe('Tabs behavior', () => {
         it('Should activate Site tab', () => {
+            let linkSitesEl = document.getElementById('sitesLink');
+            let linkImagesEl = document.getElementById('imagesLink');
+
+            linkSitesEl.classList.remove('active');
+            linkImagesEl.classList.add('active');
+
             search.changeLinkSelection(true);
             expect(search._searchLinkSites.classList.value).to.be.eq('active');
             expect(search._searchLinkImages.classList.value).to.be.eq('');
