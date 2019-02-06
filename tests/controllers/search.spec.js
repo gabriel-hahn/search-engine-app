@@ -48,7 +48,7 @@ describe('Search', () => {
             "keywords": "test,2",
             "clicks": 3
         }
-    ]
+    ];
 
     beforeEach(() => {
         jsdom.env({
