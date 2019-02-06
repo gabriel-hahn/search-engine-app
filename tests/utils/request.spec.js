@@ -52,5 +52,41 @@ describe('Request Util', () => {
                 expect(requests.length).to.be.eq(2);
             });
         });
+        
+        /*describe('Return values', () => {
+            describe('GET method', () => {
+                it('Should return the correct data', () => {
+                    sinon.stub(global.XMLHttpRequest, "onload").resolves(data);
+                    RequestUtil.get(URL).then(response => {
+                        expect(response).to.be.eq(data);
+                    });
+                });
+
+                it('Should reject the request', () => {
+                    let msg = "Error!";
+                    sinon.stub(global.XMLHttpRequest, "onerror").resolves(msg);
+                    RequestUtil.get(URL).catch(error => {
+                        expect(error).to.be.eq(data);
+                    });
+                });
+            });
+
+            describe('POST method', () => {
+                it('Should send data correctly', () => {
+                    sinon.stub(global.XMLHttpRequest, "onload").resolves(data);
+                    RequestUtil.post(URL).then(response => {
+                        expect(response).to.be.eq(data);
+                    });
+                });
+
+                it('Should reject the request', () => {
+                    let msg = "Error!";
+                    sinon.stub(global.XMLHttpRequest, "onerror").resolves(msg);
+                    RequestUtil.post(URL).catch(error => {
+                        expect(error).to.be.eq(data);
+                    });
+                });
+            });
+        }); */        
     });
 });
