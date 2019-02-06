@@ -116,6 +116,14 @@ describe('Search', () => {
         it('Should exists includeSiteResults method', () => {
             expect(search.includeSiteResults).to.exist;
         });
+
+        it('Should exists setTermResearched method', () => {
+            expect(search.setTermResearched).to.exist;
+        });
+
+        it('Should exists trimField method', () => {
+            expect(search.trimField).to.exist;
+        });
     });
 
     describe('Request methods', () => {
@@ -171,9 +179,60 @@ describe('Search', () => {
     });
 
     describe('Append results', () => {
-        /*it('Should insert all site results', () => {
+        it('Should insert all site results', () => {
+            const expected = `<p class="resultsCount"></p>
+                    <div><div class="siteResults">
+                    <div class="resultContainer">
+                        <h3 class="title">
+                            <a class="result" href="http://www.test.com.br">
+                                Title test
+                            </a>
+                        </h3>
+                        <span class="url">http://www.test.com.br</span>
+                        <span class="description">Description test</span>
+                    </div>
+                </div>
+            </div><div><div class="siteResults">
+                    <div class="resultContainer">
+                        <h3 class="title">
+                            <a class="result" href="http://www.test2.com.br">
+                                Title 2 test
+                            </a>
+                        </h3>
+                        <span class="url">http://www.test2.com.br</span>
+                        <span class="description">Description test 2</span>
+                    </div>
+                </div>
+            </div>`;
+
             search.includeSiteResults(sites);
             let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
-        });*/
+            expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
+        });
+    });
+
+    describe('Input text box', () => {
+        it('Should set "Dog" as a term', () => {
+            search.setTermResearched(search.getTerm());
+            let inputEl = document.getElementsByClassName('searchBox')[0];
+            expect(inputEl.value).to.be.eq('Dog');
+        });
+    });
+
+    describe('Trim function', () => {
+        it('Should trim "String test" to "String t..."', () => {
+            let term = search.trimField('String test', 8);
+            expect(term).to.be.eq('String t...');
+        });
+
+        it('Should trim "String test" to "String t"', () => {
+            let term = search.trimField('String t', 8);
+            expect(term).to.be.eq('String t');
+        });
+
+        it('Should return empty string', () => {
+            let term = search.trimField(null, 10);
+            expect(term).to.be.empty;
+        });
     });
 }); 

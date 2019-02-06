@@ -112,18 +112,17 @@ export default class SearchController {
         let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
 
         results.forEach(result => {
-            let element = `
-            <div class="siteResults">    
-                <div class="resultContainer">
-                    <h3 class="title">
-                        <a class="result" href=${result.url}>
-                            ${this.trimField(result.title, 55)}
-                        </a>
-                    </h3>
-                    <span class="url">${result.url}</span>
-                    <span class="description">${this.trimField(result.description, 180)}</span>
+            let element = `<div class="siteResults">
+                    <div class="resultContainer">
+                        <h3 class="title">
+                            <a class="result" href=${result.url}>
+                                ${this.trimField(result.title, 55)}
+                            </a>
+                        </h3>
+                        <span class="url">${result.url}</span>
+                        <span class="description">${this.trimField(result.description, 180)}</span>
+                    </div>
                 </div>
-            </div>
             `;
 
             let divEl = document.createElement('div');
