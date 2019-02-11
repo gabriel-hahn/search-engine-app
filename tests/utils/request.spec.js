@@ -18,6 +18,10 @@ describe('Request Util', () => {
         };
     });
 
+    afterEach(() => {
+        global.XMLHttpRequest.restore();
+    });
+
     describe('Request Util', () => {
         describe('Smoke tests', () => {
             it('Should exists get method', () => {
@@ -52,41 +56,31 @@ describe('Request Util', () => {
                 expect(requests.length).to.be.eq(2);
             });
         });
-        
-        /*describe('Return values', () => {
+
+        describe('Return and request values', () => {
             describe('GET method', () => {
-                it('Should return the correct data', () => {
-                    sinon.stub(global.XMLHttpRequest, "onload").resolves(data);
-                    RequestUtil.get(URL).then(response => {
-                        expect(response).to.be.eq(data);
-                    });
+                it('Should make a request with correct URL', () => {
+                    RequestUtil.get(URL);
+                    expect(requests[0].url).to.be.eq(URL);
                 });
 
-                it('Should reject the request', () => {
-                    let msg = "Error!";
-                    sinon.stub(global.XMLHttpRequest, "onerror").resolves(msg);
-                    RequestUtil.get(URL).catch(error => {
-                        expect(error).to.be.eq(data);
-                    });
+                it('Should calls the correct HTTP method', () => {
+                    RequestUtil.get(URL);
+                    expect(requests[0].method).to.be.eq('GET');
                 });
             });
 
             describe('POST method', () => {
-                it('Should send data correctly', () => {
-                    sinon.stub(global.XMLHttpRequest, "onload").resolves(data);
-                    RequestUtil.post(URL).then(response => {
-                        expect(response).to.be.eq(data);
-                    });
+                it('Should make a request with correct URL', () => {
+                    RequestUtil.post(URL);
+                    expect(requests[0].url).to.be.eq(URL);
                 });
 
-                it('Should reject the request', () => {
-                    let msg = "Error!";
-                    sinon.stub(global.XMLHttpRequest, "onerror").resolves(msg);
-                    RequestUtil.post(URL).catch(error => {
-                        expect(error).to.be.eq(data);
-                    });
+                it('Should calls the correct HTTP method', () => {
+                    RequestUtil.post(URL);
+                    expect(requests[0].method).to.be.eq('POST');
                 });
             });
-        }); */        
+        });
     });
 });
