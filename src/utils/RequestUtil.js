@@ -3,11 +3,17 @@ export default class RequestUtil {
 
     }
 
-    static get(url) {
+    static get(url, page) {
         return new Promise((resolve, reject) => {
             var ajax = new XMLHttpRequest();
 
             ajax.open('GET', url);
+
+            if (page) {
+                let startFrom = (page - 1) * 20;
+                ajax.setRequestHeader("limit", startFrom);
+            }
+
             ajax.send();
 
             ajax.onload = event => {

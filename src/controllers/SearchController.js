@@ -68,6 +68,14 @@ export default class SearchController {
     }
 
     /**
+     * Interval using to get results (page).
+     */
+    getPage() {
+        let url = window.location.href ? new URL(window.location.href) : null;
+        return url ? url.searchParams.get('page') : '';
+    }
+
+    /**
      * Set term in main input box.
      * 
      * @param {Term researched} term 
@@ -82,21 +90,35 @@ export default class SearchController {
      * @param {If it's needs to search term in sites or images API} isSites 
      */
     searchLinks(isSites) {
-        let term = this.getTerm();
-        this.setTermResearched(term);
+        this._term = this.getTerm();
+        this._page = this.getPage();
+
+        this._isSites = isSites;
+
+        this.setTermResearched(this._term);
 
         //Get all links or images about the term researched.
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(term)).then(data => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(this._term), this._page).then(data => {
             let response = JSON.parse(data);
-            this.setCountResults(response.length);
             this.includeSiteResults(response);
+            this.getCountByTerm();
+
             return response;
         });
     }
 
     /**
+     * Get count of all items by term.
+     */
+    getCountByTerm() {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? 'site' : 'image').concat('/getCountByTerm/').concat(this._term)).then(count => {
+            this.setCountResults(count);
+        });
+    }
+
+    /**
      * Set count results in element.
-     * @param {Count of results found} count 
+     * @param {Count of results} count 
      */
     setCountResults(count) {
         let countEl = document.getElementsByClassName('resultsCount');
@@ -139,7 +161,7 @@ export default class SearchController {
      * @param {Limit of characteres} limit 
      */
     trimField(value, limit) {
-        if(!value) return '';
+        if (!value) return '';
 
         let dots = value.length > limit ? '...' : '';
         return value.substring(0, limit).concat(dots);
