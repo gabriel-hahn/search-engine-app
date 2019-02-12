@@ -69,6 +69,20 @@ describe('Search', () => {
                     <div class="mainResultsSection">
                         <p class="resultsCount"></p>
                     </div>
+                    <div class="paginationContainer">
+                        <div class="pageButtons">
+                            <div class="pageNumberContainer">
+                                <img src="../assets/images/pageStart.png" alt="">
+                            </div>
+                            <div class="pageNumberContainer pageImg">
+                                <img src="../assets/images/page.png" alt="">
+                                <span class="pageNumber"></span>
+                            </div>
+                            <div class="pageNumberContainer">
+                                <img src="../assets/images/pageEnd.png" alt="">
+                            </div>
+                        </div>
+                    </div>
                 </body>
             </html>`,
             onload: function (window) {
@@ -103,6 +117,10 @@ describe('Search', () => {
 
         it('Should exists getTerm method', () => {
             expect(search.getTerm).to.exist;
+        });
+
+        it('Should exists setPaginationCount method', () => {
+            expect(search.setPaginationCount).to.exist;
         });
 
         it('Should exists getPage method', () => {
@@ -207,6 +225,45 @@ describe('Search', () => {
         });
     });
 
+    describe('Pagination control', () => {
+        it('Should insert 1 pagination elements', () => {
+            search.setPaginationCount(15);
+            let paginationEl = document.getElementsByClassName('pageImg');
+            expect(paginationEl.length).to.be.eq(1);
+        });
+
+        it('Should insert 3 pagination elements', () => {
+            /*search.setPaginationCount(39);
+            let paginationEl = document.getElementsByClassName('pageImg');
+            expect(paginationEl.length).to.be.eq(4);*/
+        });
+    });
+
+    describe('Input text box', () => {
+        it('Should set "Dog" as a term', () => {
+            search.setTermResearched(search.getTerm());
+            let inputEl = document.getElementsByClassName('searchBox')[0];
+            expect(inputEl.value).to.be.eq('Dog');
+        });
+    });
+
+    describe('Trim function', () => {
+        it('Should trim "String test" to "String t..."', () => {
+            let term = search.trimField('String test', 8);
+            expect(term).to.be.eq('String t...');
+        });
+
+        it('Should trim "String test" to "String t"', () => {
+            let term = search.trimField('String t', 8);
+            expect(term).to.be.eq('String t');
+        });
+
+        it('Should return empty string', () => {
+            let term = search.trimField(null, 10);
+            expect(term).to.be.empty;
+        });
+    });
+
     describe('Append results', () => {
         it('Should insert all site results', () => {
             const expected = `<p class="resultsCount"></p>
@@ -237,31 +294,6 @@ describe('Search', () => {
             search.includeSiteResults(sites);
             let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
             expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
-        });
-    });
-
-    describe('Input text box', () => {
-        it('Should set "Dog" as a term', () => {
-            search.setTermResearched(search.getTerm());
-            let inputEl = document.getElementsByClassName('searchBox')[0];
-            expect(inputEl.value).to.be.eq('Dog');
-        });
-    });
-
-    describe('Trim function', () => {
-        it('Should trim "String test" to "String t..."', () => {
-            let term = search.trimField('String test', 8);
-            expect(term).to.be.eq('String t...');
-        });
-
-        it('Should trim "String test" to "String t"', () => {
-            let term = search.trimField('String t', 8);
-            expect(term).to.be.eq('String t');
-        });
-
-        it('Should return empty string', () => {
-            let term = search.trimField(null, 10);
-            expect(term).to.be.empty;
         });
     });
 }); 

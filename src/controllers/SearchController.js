@@ -12,6 +12,7 @@ export default class SearchController {
         this.getTerm = this.getTerm.bind(this);
         this.getPage = this.getPage.bind(this);
         this.searchLinks = this.searchLinks.bind(this);
+        this.setPaginationCount = this.setPaginationCount.bind(this);
         this.getCountByTerm = this.getCountByTerm.bind(this);
         this.setCountResults = this.setCountResults.bind(this);
         this.includeSiteResults = this.includeSiteResults.bind(this);
@@ -115,7 +116,30 @@ export default class SearchController {
     getCountByTerm() {
         return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? 'site' : 'image').concat('/getCountByTerm/').concat(this._term)).then(count => {
             this.setCountResults(count);
+            this.setPaginationCount(count);
         });
+    }
+
+    /**
+     * Controls images from pagination (quantity of 'o');
+     * 
+     * @param {Total of sites found} count 
+     */
+    setPaginationCount(count) {
+        let pagEl = document.getElementsByClassName('pageImg');
+        pagEl[0].children[1].innerHTML = '1';
+
+        let numPages = count / 20;
+
+        // Add 'o' to each page.
+        for (let i = 1; i < numPages; i++) {
+            let nodeCloned = pagEl[0].cloneNode(true);
+            nodeCloned.children[1].innerHTML = (i + 1).toString();
+
+            // Append a new element after preview 'o';
+            let allEl = document.getElementsByClassName('pageImg');
+            allEl[i - 1].after(nodeCloned);
+        }
     }
 
     /**
