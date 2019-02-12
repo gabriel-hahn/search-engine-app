@@ -10,7 +10,9 @@ export default class SearchController {
         this.startEvents = this.startEvents.bind(this);
         this.changeLinkSelection = this.changeLinkSelection.bind(this);
         this.getTerm = this.getTerm.bind(this);
+        this.getPage = this.getPage.bind(this);
         this.searchLinks = this.searchLinks.bind(this);
+        this.getCountByTerm = this.getCountByTerm.bind(this);
         this.setCountResults = this.setCountResults.bind(this);
         this.includeSiteResults = this.includeSiteResults.bind(this);
         this.setTermResearched = this.setTermResearched.bind(this);

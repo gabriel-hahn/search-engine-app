@@ -12,7 +12,7 @@ describe('Search', () => {
     let search;
     let requests;
 
-    let URL_DOG = 'http://localhost:8080?term=Dog';
+    let URL_DOG = 'http://localhost:8080?term=Dog&page=3';
 
     let images = [
         {
@@ -105,8 +105,16 @@ describe('Search', () => {
             expect(search.getTerm).to.exist;
         });
 
+        it('Should exists getPage method', () => {
+            expect(search.getPage).to.exist;
+        });
+
         it('Should exists searchLinks method', () => {
             expect(search.searchLinks).to.exist;
+        });
+
+        it('Should exists getCountByTerm method', () => {
+            expect(search.getCountByTerm).to.exist;
         });
 
         it('Should exists setCountResults method', () => {
@@ -148,6 +156,15 @@ describe('Search', () => {
         });
     });
 
+    describe('Count by term', () => {
+        it('Should set 2 counts', async () => {
+            sinon.stub(RequestUtil, 'get').resolves(sites.length);
+            await search.getCountByTerm();
+            let countEl = document.getElementsByClassName('resultsCount');
+            expect(countEl[0].innerHTML.toString()).to.be.eql('2 results found');
+        });
+    });
+
     describe('Count method', () => {
         it('Should set count results to 2', () => {
             expect(search.setCountResults(2)).to.be.eq(2);
@@ -181,6 +198,12 @@ describe('Search', () => {
     describe('Get term', () => {
         it('Should return Dog', () => {
             expect(search.getTerm()).to.be.eq('Dog');
+        });
+    });
+
+    describe('Get page', () => {
+        it('Should return 3', () => {
+            expect(search.getPage()).to.be.eq('3');
         });
     });
 

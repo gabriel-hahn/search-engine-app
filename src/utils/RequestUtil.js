@@ -11,7 +11,7 @@ export default class RequestUtil {
 
             if (page) {
                 let startFrom = (page - 1) * 20;
-                ajax.setRequestHeader("limit", startFrom);
+                ajax.setRequestHeader("limit", startFrom.toString());
             }
 
             ajax.send();
