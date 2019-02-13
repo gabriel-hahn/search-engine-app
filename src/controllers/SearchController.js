@@ -132,42 +132,49 @@ export default class SearchController {
     setPaginationCount(count) {
         const MAX_PAGINATION_EL = 10;
         const MAX_SCREEN_ITEMS = 20;
-        const INITIAL_PAGINATION_INDEX = 2;
 
-        let pagEl = document.getElementsByClassName('pageImg');
-        pagEl[0].children[1].innerHTML = '1';
+        // Quantity of pagination elements.
+        let qtdPaginationEl = (count / MAX_SCREEN_ITEMS) > MAX_PAGINATION_EL ? MAX_PAGINATION_EL : (count / MAX_SCREEN_ITEMS);
+        let hasMoreThanTen = (count / MAX_SCREEN_ITEMS) > MAX_PAGINATION_EL;
 
-        let numPages = (count % MAX_SCREEN_ITEMS) > 0 ? (count / MAX_SCREEN_ITEMS) + 1 : (count / MAX_SCREEN_ITEMS);
-        let maxPages = numPages > MAX_PAGINATION_EL ? MAX_PAGINATION_EL + 1 : numPages;
+        // Control page index.
+        let pageIndex = hasMoreThanTen ? (this._currentPage > 5 ? this._currentPage - 4 : 1) : 1;
+
+        let pagElModel = document.getElementsByClassName('pageImg')[0].cloneNode(true);
 
         // Add 'o' to each page.
-        for (let i = INITIAL_PAGINATION_INDEX; i < maxPages; i++) {
-            let nodeCloned = pagEl[0].cloneNode(true);
-            nodeCloned.children[1].innerHTML = (i).toString();
+        for (let elementIndex = 0; elementIndex < qtdPaginationEl; elementIndex++) {
+            let pagEl = document.getElementsByClassName('pageImg');
+
+            let nodeCloned = elementIndex === 0 ? pagEl[0] : pagElModel.cloneNode(true);
+            nodeCloned.children[1].innerHTML = (pageIndex).toString();
 
             // If page is the current page and different of one (first page).
-            if (parseInt(this._currentPage) === i && parseInt(this._currentPage) !== 1) {
+            if (parseInt(this._currentPage) === pageIndex || (!this._currentPage && pageIndex === 1)) {
                 nodeCloned.children[0].src = '../assets/images/pageSelected.png';
             }
             else {
+                nodeCloned.children[0].src = '../assets/images/page.png';
+
                 // Create a link to pages that isn't current page.
                 let childrens = nodeCloned.children;
                 let a = document.createElement('a');
 
-                a.href = this.getLinkHrefElement(i);
+                a.href = this.getLinkHrefElement(pageIndex);
 
                 [...childrens].forEach(e => a.appendChild(e));
                 nodeCloned.appendChild(a);
             }
 
             // Append a new element after preview 'o';
-            let allEl = document.getElementsByClassName('pageImg');
-            let element = allEl[i - INITIAL_PAGINATION_INDEX];
-            element.parentNode.insertBefore(nodeCloned, element.nextSibling);
-        }
+            if (elementIndex >= 1) {
+                let allEl = document.getElementsByClassName('pageImg');
+                let element = allEl[elementIndex - 1];
+                element.parentNode.insertBefore(nodeCloned, element.nextSibling);
+            }
 
-        // Add correct image to pagination if the current page is the first.
-        if (this._currentPage === 1 || !this._currentPage) pagEl[0].children[0].src = '../assets/images/pageSelected.png';
+            pageIndex++;
+        }
     }
 
     /**
@@ -230,7 +237,7 @@ export default class SearchController {
      * @param {URL that was clicked} url 
      */
     increaseClicks(url) {
-        
+
     }
 
     /**
