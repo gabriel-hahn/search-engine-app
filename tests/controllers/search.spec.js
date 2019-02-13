@@ -243,11 +243,11 @@ describe('Search', () => {
             expect(paginationEl.length).to.be.eq(1);
         });
 
-        it('Should insert 3 pagination elements', () => {
-            /*search.setPaginationCount(39);
+        /*it('Should insert 3 pagination elements', () => {
+            search.setPaginationCount(85);
             let paginationEl = document.getElementsByClassName('pageImg');
-            expect(paginationEl.length).to.be.eq(4);*/
-        });
+            expect(paginationEl.length).to.be.eq(4);
+        });*/
     });
 
     describe('Input text box', () => {

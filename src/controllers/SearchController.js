@@ -129,13 +129,17 @@ export default class SearchController {
      * @param {Total of sites found} count 
      */
     setPaginationCount(count) {
+        const MAX_PAGINATION_EL = 10;
+        const MAX_SCREEN_ITEMS = 20;
+
         let pagEl = document.getElementsByClassName('pageImg');
         pagEl[0].children[1].innerHTML = '1';
 
-        let numPages = (count % 20) > 0 ? (count / 20) + 1 : (count / 20);
+        let numPages = (count % MAX_SCREEN_ITEMS) > 0 ? (count / MAX_SCREEN_ITEMS) + 1 : (count / MAX_SCREEN_ITEMS);
+        let maxPages = numPages > MAX_PAGINATION_EL ? MAX_PAGINATION_EL + 1 : numPages;
 
         // Add 'o' to each page.
-        for (let i = 2; i < numPages; i++) {
+        for (let i = 2; i < maxPages; i++) {
             let nodeCloned = pagEl[0].cloneNode(true);
             nodeCloned.children[1].innerHTML = (i).toString();
 
