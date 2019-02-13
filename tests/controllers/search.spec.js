@@ -247,7 +247,7 @@ describe('Search', () => {
             expect(paginationEl.length).to.be.eq(1);
         });
 
-        it('Should insert 3 pagination elements', () => {
+        it('Should insert 5 pagination elements', () => {
             search.setPaginationCount(85);
             let paginationEl = document.getElementsByClassName('pageImg');
             expect(paginationEl.length).to.be.eq(5);

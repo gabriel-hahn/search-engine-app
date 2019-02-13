@@ -134,6 +134,7 @@ export default class SearchController {
         const MAX_SCREEN_ITEMS = 20;
 
         // Quantity of pagination elements.
+        let qtdPaginationElTotal = (count / MAX_SCREEN_ITEMS) % 2 === 0 ? (count / MAX_SCREEN_ITEMS) : (count / MAX_SCREEN_ITEMS) + 1;
         let qtdPaginationEl = (count / MAX_SCREEN_ITEMS) > MAX_PAGINATION_EL ? MAX_PAGINATION_EL : (count / MAX_SCREEN_ITEMS);
         let hasMoreThanTen = (count / MAX_SCREEN_ITEMS) > MAX_PAGINATION_EL;
 
@@ -144,6 +145,12 @@ export default class SearchController {
 
         // Add 'o' to each page.
         for (let elementIndex = 0; elementIndex < qtdPaginationEl; elementIndex++) {
+            
+            // It controls the number of pagination elements.
+            if (pageIndex > qtdPaginationElTotal) {
+                continue;
+            }
+
             let pagEl = document.getElementsByClassName('pageImg');
 
             let nodeCloned = elementIndex === 0 ? pagEl[0] : pagElModel.cloneNode(true);
