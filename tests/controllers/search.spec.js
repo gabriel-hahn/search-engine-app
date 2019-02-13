@@ -151,6 +151,10 @@ describe('Search', () => {
             expect(search.getLinkHrefElement).to.exist;
         });
 
+        it('Should exists increaseClicks method', () => {
+            expect(search.increaseClicks).to.exist;
+        });
+
         it('Should exists trimField method', () => {
             expect(search.trimField).to.exist;
         });
@@ -243,11 +247,17 @@ describe('Search', () => {
             expect(paginationEl.length).to.be.eq(1);
         });
 
-        /*it('Should insert 3 pagination elements', () => {
+        it('Should insert 3 pagination elements', () => {
             search.setPaginationCount(85);
             let paginationEl = document.getElementsByClassName('pageImg');
-            expect(paginationEl.length).to.be.eq(4);
-        });*/
+            expect(paginationEl.length).to.be.eq(5);
+        });
+
+        it('Should insert 10 pagination elements, even using more than 200 results', () => {
+            search.setPaginationCount(240);
+            let paginationEl = document.getElementsByClassName('pageImg');
+            expect(paginationEl.length).to.be.eq(10);
+        });
     });
 
     describe('Input text box', () => {

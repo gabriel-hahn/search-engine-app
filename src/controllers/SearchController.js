@@ -18,6 +18,7 @@ export default class SearchController {
         this.includeSiteResults = this.includeSiteResults.bind(this);
         this.setTermResearched = this.setTermResearched.bind(this);
         this.getLinkHrefElement = this.getLinkHrefElement.bind(this);
+        this.increaseClicks = this.increaseClicks.bind(this);
         this.trimField = this.trimField.bind(this);
 
         this._currentPage = this.getPage();
@@ -131,6 +132,7 @@ export default class SearchController {
     setPaginationCount(count) {
         const MAX_PAGINATION_EL = 10;
         const MAX_SCREEN_ITEMS = 20;
+        const INITIAL_PAGINATION_INDEX = 2;
 
         let pagEl = document.getElementsByClassName('pageImg');
         pagEl[0].children[1].innerHTML = '1';
@@ -139,7 +141,7 @@ export default class SearchController {
         let maxPages = numPages > MAX_PAGINATION_EL ? MAX_PAGINATION_EL + 1 : numPages;
 
         // Add 'o' to each page.
-        for (let i = 2; i < maxPages; i++) {
+        for (let i = INITIAL_PAGINATION_INDEX; i < maxPages; i++) {
             let nodeCloned = pagEl[0].cloneNode(true);
             nodeCloned.children[1].innerHTML = (i).toString();
 
@@ -160,11 +162,12 @@ export default class SearchController {
 
             // Append a new element after preview 'o';
             let allEl = document.getElementsByClassName('pageImg');
-            allEl[i - 2].after(nodeCloned);
+            let element = allEl[i - INITIAL_PAGINATION_INDEX];
+            element.parentNode.insertBefore(nodeCloned, element.nextSibling);
         }
 
         // Add correct image to pagination if the current page is the first.
-        if (this._currentPage === 1) pagEl[0].children[0].src = '../assets/images/pageSelected.png';
+        if (this._currentPage === 1 || !this._currentPage) pagEl[0].children[0].src = '../assets/images/pageSelected.png';
     }
 
     /**
@@ -219,6 +222,15 @@ export default class SearchController {
 
             resultsEl.appendChild(divEl);
         });
+    }
+
+    /**
+     * Increase the clicks number of a data.
+     * 
+     * @param {URL that was clicked} url 
+     */
+    increaseClicks(url) {
+        
     }
 
     /**
