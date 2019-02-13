@@ -17,7 +17,10 @@ export default class SearchController {
         this.setCountResults = this.setCountResults.bind(this);
         this.includeSiteResults = this.includeSiteResults.bind(this);
         this.setTermResearched = this.setTermResearched.bind(this);
+        this.getLinkHrefElement = this.getLinkHrefElement.bind(this);
         this.trimField = this.trimField.bind(this);
+
+        this._currentPage = this.getPage();
 
         this.startEvents();
     }
@@ -75,7 +78,7 @@ export default class SearchController {
      */
     getPage() {
         let url = window.location.href ? new URL(window.location.href) : null;
-        return url ? url.searchParams.get('page') : '';
+        return url ? url.searchParams.get('page') : 1;
     }
 
     /**
@@ -129,17 +132,51 @@ export default class SearchController {
         let pagEl = document.getElementsByClassName('pageImg');
         pagEl[0].children[1].innerHTML = '1';
 
-        let numPages = count / 20;
+        let numPages = (count % 20) > 0 ? (count / 20) + 1 : (count / 20);
 
         // Add 'o' to each page.
-        for (let i = 1; i < numPages; i++) {
+        for (let i = 2; i < numPages; i++) {
             let nodeCloned = pagEl[0].cloneNode(true);
-            nodeCloned.children[1].innerHTML = (i + 1).toString();
+            nodeCloned.children[1].innerHTML = (i).toString();
+
+            // If page is the current page and different of one (first page).
+            if (parseInt(this._currentPage) === i && parseInt(this._currentPage) !== 1) {
+                nodeCloned.children[0].src = '../assets/images/pageSelected.png';
+            }
+            else {
+                // Create a link to pages that isn't current page.
+                let childrens = nodeCloned.children;
+                let a = document.createElement('a');
+
+                a.href = this.getLinkHrefElement(i);
+
+                [...childrens].forEach(e => a.appendChild(e));
+                nodeCloned.appendChild(a);
+            }
 
             // Append a new element after preview 'o';
             let allEl = document.getElementsByClassName('pageImg');
-            allEl[i - 1].after(nodeCloned);
+            allEl[i - 2].after(nodeCloned);
         }
+
+        // Add correct image to pagination if the current page is the first.
+        if (this._currentPage === 1) pagEl[0].children[0].src = '../assets/images/pageSelected.png';
+    }
+
+    /**
+     * Return correct href to include in pagination elements.
+     * 
+     * @param {Page number} pageNumber 
+     */
+    getLinkHrefElement(pageNumber) {
+        let url = new URL(window.location.href);
+
+        if (url.searchParams.get('page')) {
+            url.searchParams.set('page', pageNumber);
+            return url.href;
+        }
+
+        return url.href.concat(`&page=${pageNumber}`);
     }
 
     /**

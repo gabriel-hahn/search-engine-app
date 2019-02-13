@@ -219,7 +219,8 @@ body {
     height: 37px;
 }
 
-.pageNumberContainer {
+.pageNumberContainer,
+.pageNumberContainer a{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -229,4 +230,8 @@ body {
 .pageNumber {
     color: #000;
     font-size: 13px;
+}
+
+a .pageNumber {
+    color: #4285f4;
 }

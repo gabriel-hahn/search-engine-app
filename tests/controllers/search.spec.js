@@ -147,6 +147,10 @@ describe('Search', () => {
             expect(search.setTermResearched).to.exist;
         });
 
+        it('Should exists getLinkHrefElement method', () => {
+            expect(search.getLinkHrefElement).to.exist;
+        });
+
         it('Should exists trimField method', () => {
             expect(search.trimField).to.exist;
         });
@@ -190,6 +194,13 @@ describe('Search', () => {
 
         it('Should set count results to 3', () => {
             expect(search.setCountResults(3)).to.be.eq(3);
+        });
+    });
+
+    describe ('Correct Href to pagination elements', () => {
+        it ('Should include link to page 3', () => {
+            let href = search.getLinkHrefElement(3);
+            expect(href).to.be.eq('http://localhost:8080/?term=Dog&page=3');
         });
     });
 
