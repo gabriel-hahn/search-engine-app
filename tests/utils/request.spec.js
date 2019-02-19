@@ -31,6 +31,10 @@ describe('Request Util', () => {
             it('Should exists post method', () => {
                 expect(RequestUtil.post).to.exist;
             });
+
+            it('Should exists put method', () => {
+                expect(RequestUtil.put).to.exist;
+            });
         });
 
         describe('Request count', () => {
@@ -53,6 +57,17 @@ describe('Request Util', () => {
             it('Should call request POST twice', () => {
                 RequestUtil.post(URL);
                 RequestUtil.post(URL);
+                expect(requests.length).to.be.eq(2);
+            });
+
+            it('Should call request PUT once', () => {
+                RequestUtil.put(URL);
+                expect(requests.length).to.be.eq(1);
+            });
+
+            it('Should call request PUT twice', () => {
+                RequestUtil.put(URL);
+                RequestUtil.put(URL);
                 expect(requests.length).to.be.eq(2);
             });
         });
@@ -79,6 +94,18 @@ describe('Request Util', () => {
                 it('Should calls the correct HTTP method', () => {
                     RequestUtil.post(URL);
                     expect(requests[0].method).to.be.eq('POST');
+                });
+            });
+
+            describe('PUT method', () => {
+                it('Should make a request with correct URL', () => {
+                    RequestUtil.put(URL);
+                    expect(requests[0].url).to.be.eq(URL);
+                });
+
+                it('Should calls the correct HTTP method', () => {
+                    RequestUtil.put(URL);
+                    expect(requests[0].method).to.be.eq('PUT');
                 });
             });
         });

@@ -35,6 +35,7 @@ describe('Search', () => {
 
     let sites = [
         {
+            "_id": "d3e12e3ew",
             "url": "http://www.test.com.br",
             "title": "Title test",
             "description": "Description test",
@@ -42,6 +43,7 @@ describe('Search', () => {
             "clicks": 2
         },
         {
+            "_id": "sad2e1dww",
             "url": "http://www.test2.com.br",
             "title": "Title 2 test",
             "description": "Description test 2",
@@ -208,6 +210,15 @@ describe('Search', () => {
         });
     });
 
+    describe ('Increase clicks values', () => {
+        it ('Should return the same site after increse clicks number', () => {
+            sinon.stub(RequestUtil, 'put').resolves(sites[0]);
+            search.increaseClicks(sites[0]._id).then(r => {
+                expect(r).to.be.eql(sites[0]);
+            });
+        });
+    });
+
     describe('Tabs behavior', () => {
         it('Should activate Site tab', () => {
             let linkSitesEl = document.getElementById('sitesLink');
@@ -291,7 +302,7 @@ describe('Search', () => {
                     <div><div class="siteResults">
                     <div class="resultContainer">
                         <h3 class="title">
-                            <a class="result" href="http://www.test.com.br">
+                            <a class="result" href="http://www.test.com.br" id="d3e12e3ew">
                                 Title test
                             </a>
                         </h3>
@@ -302,7 +313,7 @@ describe('Search', () => {
             </div><div><div class="siteResults">
                     <div class="resultContainer">
                         <h3 class="title">
-                            <a class="result" href="http://www.test2.com.br">
+                            <a class="result" href="http://www.test2.com.br" id="sad2e1dww">
                                 Title 2 test
                             </a>
                         </h3>

@@ -18,8 +18,8 @@ export default class SearchController {
         this.includeSiteResults = this.includeSiteResults.bind(this);
         this.setTermResearched = this.setTermResearched.bind(this);
         this.getLinkHrefElement = this.getLinkHrefElement.bind(this);
-        this.increaseClicks = this.increaseClicks.bind(this);
         this.trimField = this.trimField.bind(this);
+        this.increaseClicks = this.increaseClicks.bind(this);
 
         this._currentPage = this.getPage();
 
@@ -45,6 +45,15 @@ export default class SearchController {
 
             this._searchLinkSites.click();
         }
+    }
+
+    /**
+     * Increase number of clicks of site clicked.
+     * 
+     * @param {Link's ID} id 
+     */
+    increaseClicks(id) {
+        return RequestUtil.put(ConfigUtil.DEFAULT_API.concat(this._isSites ? 'site' : 'image').concat('/increase'), { id });
     }
 
     /**
@@ -145,7 +154,7 @@ export default class SearchController {
 
         // Add 'o' to each page.
         for (let elementIndex = 0; elementIndex < qtdPaginationEl; elementIndex++) {
-            
+
             // It controls the number of pagination elements.
             if (pageIndex > qtdPaginationElTotal) {
                 continue;
@@ -234,17 +243,17 @@ export default class SearchController {
             let divEl = document.createElement('div');
             divEl.innerHTML = element;
 
+            // Add ID to dataset.
+            let linkEl = divEl.getElementsByClassName('result')[0];
+            linkEl.setAttribute('id', result._id);
+
+            // Event to increase clicks number.
+            linkEl.addEventListener('mouseover', e => {
+                this.increaseClicks(e.target.getAttribute('id'));
+            });
+
             resultsEl.appendChild(divEl);
         });
-    }
-
-    /**
-     * Increase the clicks number of a data.
-     * 
-     * @param {URL that was clicked} url 
-     */
-    increaseClicks(url) {
-
     }
 
     /**

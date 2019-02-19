@@ -43,4 +43,22 @@ export default class RequestUtil {
             }
         });
     }
+
+    static put(url, data) {
+        return new Promise((resolve, reject) => {
+            var ajax = new XMLHttpRequest();
+
+            ajax.open('PUT', url);
+            ajax.setRequestHeader('Content-type', 'application/json');
+            ajax.send(JSON.stringify(data));
+
+            ajax.onload = event => {
+                resolve(ajax.responseText);
+            }
+
+            ajax.onerror = err => {
+                reject(err);
+            }
+        });
+    }
 }
