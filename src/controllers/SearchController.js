@@ -1,11 +1,11 @@
-import RequestUtil from '../utils/RequestUtil';
-import ConfigUtil from '../utils/ConfigUtil';
+import RequestUtil from "../utils/RequestUtil";
+import ConfigUtil from "../utils/ConfigUtil";
 
 export default class SearchController {
 
     constructor() {
-        this._searchLinkSites = document.getElementById('sitesLink');
-        this._searchLinkImages = document.getElementById('imagesLink');
+        this._searchLinkSites = document.getElementById("sitesLink");
+        this._searchLinkImages = document.getElementById("imagesLink");
 
         this.startEvents = this.startEvents.bind(this);
         this.changeLinkSelection = this.changeLinkSelection.bind(this);
@@ -32,13 +32,13 @@ export default class SearchController {
      */
     startEvents() {
         window.onload = () => {
-            this._searchLinkSites.addEventListener('click', e => {
+            this._searchLinkSites.addEventListener("click", e => {
                 e.preventDefault();
                 this.changeLinkSelection(true);
                 this.searchLinks(true);
             });
 
-            this._searchLinkImages.addEventListener('click', e => {
+            this._searchLinkImages.addEventListener("click", e => {
                 e.preventDefault();
                 this.changeLinkSelection(false);
                 this.searchLinks(false);
@@ -54,7 +54,7 @@ export default class SearchController {
      * @param {Link's ID} id 
      */
     increaseClicks(id) {
-        return RequestUtil.put(ConfigUtil.DEFAULT_API.concat(this._isSites ? 'site' : 'image').concat('/increase'), { id });
+        return RequestUtil.put(ConfigUtil.DEFAULT_API.concat(this._isSites ? "site" : "image").concat("/increase"), { id });
     }
 
     /**
@@ -63,15 +63,15 @@ export default class SearchController {
      */
     changeLinkSelection(isSites) {
         if (isSites) {
-            if (![...this._searchLinkSites.classList].includes('active')) {
-                this._searchLinkSites.classList.add('active');
-                this._searchLinkImages.classList.remove('active');
+            if (![...this._searchLinkSites.classList].includes("active")) {
+                this._searchLinkSites.classList.add("active");
+                this._searchLinkImages.classList.remove("active");
             }
         }
         else {
-            if (![...this._searchLinkImages.classList].includes('active')) {
-                this._searchLinkSites.classList.remove('active');
-                this._searchLinkImages.classList.add('active');
+            if (![...this._searchLinkImages.classList].includes("active")) {
+                this._searchLinkSites.classList.remove("active");
+                this._searchLinkImages.classList.add("active");
             }
         }
     }
@@ -81,7 +81,7 @@ export default class SearchController {
      */
     getTerm() {
         let url = window.location.href ? new URL(window.location.href) : null;
-        return url ? url.searchParams.get('term') : '';
+        return url ? url.searchParams.get("term") : "";
     }
 
     /**
@@ -89,7 +89,7 @@ export default class SearchController {
      */
     getPage() {
         let url = window.location.href ? new URL(window.location.href) : null;
-        return url ? url.searchParams.get('page') : 1;
+        return url ? url.searchParams.get("page") : 1;
     }
 
     /**
@@ -98,7 +98,7 @@ export default class SearchController {
      * @param {Term researched} term 
      */
     setTermResearched(term) {
-        let inputEl = document.getElementsByClassName('searchBox')[0];
+        let inputEl = document.getElementsByClassName("searchBox")[0];
         inputEl.value = term;
     }
 
@@ -115,7 +115,7 @@ export default class SearchController {
         this.setTermResearched(this._term);
 
         //Get all links or images about the term researched.
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(this._term), this._page).then(data => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? "site" : "image").concat("/getByTerm/").concat(this._term), this._page).then(data => {
             let response = JSON.parse(data);
             this.cleanResults();
             this.includeResults(response, isSites);
@@ -126,7 +126,7 @@ export default class SearchController {
     }
 
     cleanResults() {
-        let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+        let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
         resultsEl.innerHTML = '<p class="resultsCount"></p>';
     }
 
@@ -134,7 +134,7 @@ export default class SearchController {
      * Get count of all items by term.
      */
     getCountByTerm() {
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? 'site' : 'image').concat('/getCountByTerm/').concat(this._term)).then(count => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? "site" : "image").concat("/getCountByTerm/").concat(this._term)).then(count => {
             this.setCountResults(count);
             this.setPaginationCount(count);
         });
@@ -157,7 +157,7 @@ export default class SearchController {
         // Control page index.
         let pageIndex = hasMoreThanTen ? (this._currentPage > 5 ? this._currentPage - 4 : 1) : 1;
 
-        let pagElModel = document.getElementsByClassName('pageImg')[0].cloneNode(true);
+        let pagElModel = document.getElementsByClassName("pageImg")[0].cloneNode(true);
 
         // Add 'o' to each page.
         for (let elementIndex = 0; elementIndex < qtdPaginationEl; elementIndex++) {
@@ -167,21 +167,21 @@ export default class SearchController {
                 continue;
             }
 
-            let pagEl = document.getElementsByClassName('pageImg');
+            let pagEl = document.getElementsByClassName("pageImg");
 
             let nodeCloned = elementIndex === 0 ? pagEl[0] : pagElModel.cloneNode(true);
             nodeCloned.children[1].innerHTML = (pageIndex).toString();
 
             // If page is the current page and different of one (first page).
             if (parseInt(this._currentPage) === pageIndex || (!this._currentPage && pageIndex === 1)) {
-                nodeCloned.children[0].src = '../assets/images/pageSelected.png';
+                nodeCloned.children[0].src = "../assets/images/pageSelected.png";
             }
             else {
-                nodeCloned.children[0].src = '../assets/images/page.png';
+                nodeCloned.children[0].src = "../assets/images/page.png";
 
                 // Create a link to pages that isn't current page.
                 let childrens = nodeCloned.children;
-                let a = document.createElement('a');
+                let a = document.createElement("a");
 
                 a.href = this.getLinkHrefElement(pageIndex);
 
@@ -191,7 +191,7 @@ export default class SearchController {
 
             // Append a new element after preview 'o';
             if (elementIndex >= 1) {
-                let allEl = document.getElementsByClassName('pageImg');
+                let allEl = document.getElementsByClassName("pageImg");
                 let element = allEl[elementIndex - 1];
                 element.parentNode.insertBefore(nodeCloned, element.nextSibling);
             }
@@ -208,8 +208,8 @@ export default class SearchController {
     getLinkHrefElement(pageNumber) {
         let url = new URL(window.location.href);
 
-        if (url.searchParams.get('page')) {
-            url.searchParams.set('page', pageNumber);
+        if (url.searchParams.get("page")) {
+            url.searchParams.set("page", pageNumber);
             return url.href;
         }
 
@@ -221,7 +221,7 @@ export default class SearchController {
      * @param {Count of results} count 
      */
     setCountResults(count) {
-        let countEl = document.getElementsByClassName('resultsCount');
+        let countEl = document.getElementsByClassName("resultsCount");
         countEl[0].innerHTML = `${count} results found`;
         return count;
     }
@@ -232,7 +232,7 @@ export default class SearchController {
      * @param {If is sites or images results} isSites 
      */
     includeResults(results, isSites) {
-        let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+        let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
 
         results.forEach(result => {
             let element;
@@ -263,34 +263,34 @@ export default class SearchController {
                 `;
             }
 
-            let divEl = document.createElement('div');
+            let divEl = document.createElement("div");
             divEl.innerHTML = element;
 
             if (isSites) {
                 // Add ID to dataset.
-                let linkEl = divEl.getElementsByClassName('result')[0];
-                linkEl.setAttribute('id', result._id);
+                let linkEl = divEl.getElementsByClassName("result")[0];
+                linkEl.setAttribute("id", result._id);
 
                 // Event to increase clicks number.
-                linkEl.addEventListener('click', e => {
-                    this.increaseClicks(e.target.getAttribute('id'));
+                linkEl.addEventListener("click", e => {
+                    this.increaseClicks(e.target.getAttribute("id"));
                 });
             }
             else {
-                divEl.classList.add('imageResults');
+                divEl.classList.add("imageResults");
             }
 
             resultsEl.appendChild(divEl);
         });
 
         if (!isSites) {
-            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
 
-            let Masonry = require('masonry-layout');
+            let Masonry = require("masonry-layout");
             
             // It'll organize images on screen.
             new Masonry(resultsEl, {
-                itemSelector: '.gridItem',
+                itemSelector: ".gridItem",
                 columnWidth: 200,
                 gutter: 5
             });
@@ -304,9 +304,9 @@ export default class SearchController {
      * @param {Limit of characteres} limit 
      */
     trimField(value, limit) {
-        if (!value) return '';
+        if (!value) return "";
 
-        let dots = value.length > limit ? '...' : '';
+        let dots = value.length > limit ? "..." : "";
         return value.substring(0, limit).concat(dots);
     }
 }
