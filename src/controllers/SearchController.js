@@ -1,6 +1,5 @@
 import RequestUtil from '../utils/RequestUtil';
 import ConfigUtil from '../utils/ConfigUtil';
-import Masonry from 'masonry-layout';
 
 export default class SearchController {
 
@@ -286,6 +285,8 @@ export default class SearchController {
 
         if (!isSites) {
             let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+
+            let Masonry = require('masonry-layout');
             
             // It'll organize images on screen.
             new Masonry(resultsEl, {

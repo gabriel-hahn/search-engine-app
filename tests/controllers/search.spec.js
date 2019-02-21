@@ -78,13 +78,13 @@ describe('Search', () => {
             </div>`;
 
     let expectedAuxImage = `<p class="resultsCount"></p>
-                    <div class="imageResults"><div class="gridItem" style="position: absolute; left: -205px;">
+                    <div class="imageResults"><div class="gridItem" style="position: absolute; left: 0px; top: 0px;">
                         <a href="undefined">
                             <img src="undefined">
                             <span class="details">Title test</span>
                         </a>
                     </div>
-                </div><div class="imageResults"><div class="gridItem" style="position: absolute; left: -205px;">
+                </div><div class="imageResults"><div class="gridItem" style="position: absolute; left: 0px; top: 0px;">
                         <a href="undefined">
                             <img src="undefined">
                             <span class="details">Title 2 test</span>
