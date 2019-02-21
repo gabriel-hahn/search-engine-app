@@ -1,5 +1,6 @@
 import RequestUtil from '../utils/RequestUtil';
 import ConfigUtil from '../utils/ConfigUtil';
+import Masonry from 'masonry-layout';
 
 export default class SearchController {
 
@@ -15,11 +16,12 @@ export default class SearchController {
         this.setPaginationCount = this.setPaginationCount.bind(this);
         this.getCountByTerm = this.getCountByTerm.bind(this);
         this.setCountResults = this.setCountResults.bind(this);
-        this.includeSiteResults = this.includeSiteResults.bind(this);
+        this.includeResults = this.includeResults.bind(this);
         this.setTermResearched = this.setTermResearched.bind(this);
         this.getLinkHrefElement = this.getLinkHrefElement.bind(this);
         this.trimField = this.trimField.bind(this);
         this.increaseClicks = this.increaseClicks.bind(this);
+        this.cleanResults = this.cleanResults.bind(this);
 
         this._currentPage = this.getPage();
 
@@ -116,11 +118,17 @@ export default class SearchController {
         //Get all links or images about the term researched.
         return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? 'site' : 'image').concat('/getByTerm/').concat(this._term), this._page).then(data => {
             let response = JSON.parse(data);
-            this.includeSiteResults(response);
+            this.cleanResults();
+            this.includeResults(response, isSites);
             this.getCountByTerm();
 
             return response;
         });
+    }
+
+    cleanResults() {
+        let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+        resultsEl.innerHTML = '<p class="resultsCount"></p>';
     }
 
     /**
@@ -222,12 +230,16 @@ export default class SearchController {
     /**
      * Include all results in links and list on screen.
      * @param {All results found} results 
+     * @param {If is sites or images results} isSites 
      */
-    includeSiteResults(results) {
+    includeResults(results, isSites) {
         let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
 
         results.forEach(result => {
-            let element = `<div class="siteResults">
+            let element;
+
+            if (isSites) {
+                element = `<div class="siteResults">
                     <div class="resultContainer">
                         <h3 class="title">
                             <a class="result" href=${result.url}>
@@ -239,21 +251,49 @@ export default class SearchController {
                     </div>
                 </div>
             `;
+            }
+            else {
+                let displayText = result.title ? result.title : (result.alt ? result.alt : result.imageUrl);
+
+                element = `<div class="gridItem">
+                        <a href="${result.imageUrl}">
+                            <img src="${result.imageUrl}">
+                            <span class="details">${displayText}</span>
+                        </a>
+                    </div>
+                `;
+            }
 
             let divEl = document.createElement('div');
             divEl.innerHTML = element;
 
-            // Add ID to dataset.
-            let linkEl = divEl.getElementsByClassName('result')[0];
-            linkEl.setAttribute('id', result._id);
+            if (isSites) {
+                // Add ID to dataset.
+                let linkEl = divEl.getElementsByClassName('result')[0];
+                linkEl.setAttribute('id', result._id);
 
-            // Event to increase clicks number.
-            linkEl.addEventListener('mouseover', e => {
-                this.increaseClicks(e.target.getAttribute('id'));
-            });
+                // Event to increase clicks number.
+                linkEl.addEventListener('click', e => {
+                    this.increaseClicks(e.target.getAttribute('id'));
+                });
+            }
+            else {
+                divEl.classList.add('imageResults');
+            }
 
             resultsEl.appendChild(divEl);
         });
+
+        if (!isSites) {
+            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            
+            // It'll organize images on screen.
+            new Masonry(resultsEl, {
+                itemSelector: '.gridItem',
+                columnWidth: 200,
+                gutter: 5
+            });
+        }
     }
 
     /**

@@ -52,6 +52,46 @@ describe('Search', () => {
         }
     ];
 
+    let expectedAuxSite = `<p class="resultsCount"></p>
+                    <div><div class="siteResults">
+                    <div class="resultContainer">
+                        <h3 class="title">
+                            <a class="result" href="http://www.test.com.br" id="d3e12e3ew">
+                                Title test
+                            </a>
+                        </h3>
+                        <span class="url">http://www.test.com.br</span>
+                        <span class="description">Description test</span>
+                    </div>
+                </div>
+            </div><div><div class="siteResults">
+                    <div class="resultContainer">
+                        <h3 class="title">
+                            <a class="result" href="http://www.test2.com.br" id="sad2e1dww">
+                                Title 2 test
+                            </a>
+                        </h3>
+                        <span class="url">http://www.test2.com.br</span>
+                        <span class="description">Description test 2</span>
+                    </div>
+                </div>
+            </div>`;
+
+    let expectedAuxImage = `<p class="resultsCount"></p>
+                    <div class="imageResults"><div class="gridItem" style="position: absolute; left: -205px;">
+                        <a href="undefined">
+                            <img src="undefined">
+                            <span class="details">Title test</span>
+                        </a>
+                    </div>
+                </div><div class="imageResults"><div class="gridItem" style="position: absolute; left: -205px;">
+                        <a href="undefined">
+                            <img src="undefined">
+                            <span class="details">Title 2 test</span>
+                        </a>
+                    </div>
+                </div>`;
+
     beforeEach(() => {
         jsdom.env({
             url: URL_DOG, 'html': `<html>
@@ -90,6 +130,8 @@ describe('Search', () => {
             onload: function (window) {
                 global.window = window;
                 global.document = window.document;
+                global.HTMLElement = window.HTMLElement;
+                global.getComputedStyle = window.getComputedStyle;
 
                 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
                 requests = [];
@@ -141,8 +183,8 @@ describe('Search', () => {
             expect(search.setCountResults).to.exist;
         });
 
-        it('Should exists includeSiteResults method', () => {
-            expect(search.includeSiteResults).to.exist;
+        it('Should exists includeResults method', () => {
+            expect(search.includeResults).to.exist;
         });
 
         it('Should exists setTermResearched method', () => {
@@ -159,6 +201,10 @@ describe('Search', () => {
 
         it('Should exists trimField method', () => {
             expect(search.trimField).to.exist;
+        });
+
+        it('Should exists cleanResults method', () => {
+            expect(search.cleanResults).to.exist;
         });
     });
 
@@ -203,15 +249,15 @@ describe('Search', () => {
         });
     });
 
-    describe ('Correct Href to pagination elements', () => {
-        it ('Should include link to page 3', () => {
+    describe('Correct Href to pagination elements', () => {
+        it('Should include link to page 3', () => {
             let href = search.getLinkHrefElement(3);
             expect(href).to.be.eq('http://localhost:8080/?term=Dog&page=3');
         });
     });
 
-    describe ('Increase clicks values', () => {
-        it ('Should return the same site after increse clicks number', () => {
+    describe('Increase clicks values', () => {
+        it('Should return the same site after increse clicks number', () => {
             sinon.stub(RequestUtil, 'put').resolves(sites[0]);
             search.increaseClicks(sites[0]._id).then(r => {
                 expect(r).to.be.eql(sites[0]);
@@ -296,36 +342,27 @@ describe('Search', () => {
         });
     });
 
+    describe('Cleaner method', () => {
+        it('Should clear all results', () => {
+            search.includeResults(sites, true);
+            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            search.cleanResults();
+            let expected = '<p class="resultsCount"></p>';
+            expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
+        });
+    });
+
     describe('Append results', () => {
         it('Should insert all site results', () => {
-            const expected = `<p class="resultsCount"></p>
-                    <div><div class="siteResults">
-                    <div class="resultContainer">
-                        <h3 class="title">
-                            <a class="result" href="http://www.test.com.br" id="d3e12e3ew">
-                                Title test
-                            </a>
-                        </h3>
-                        <span class="url">http://www.test.com.br</span>
-                        <span class="description">Description test</span>
-                    </div>
-                </div>
-            </div><div><div class="siteResults">
-                    <div class="resultContainer">
-                        <h3 class="title">
-                            <a class="result" href="http://www.test2.com.br" id="sad2e1dww">
-                                Title 2 test
-                            </a>
-                        </h3>
-                        <span class="url">http://www.test2.com.br</span>
-                        <span class="description">Description test 2</span>
-                    </div>
-                </div>
-            </div>`;
-
-            search.includeSiteResults(sites);
+            search.includeResults(sites, true);
             let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
-            expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
+            expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expectedAuxSite);
+        });
+
+        it('Should insert all image results', () => {
+            search.includeResults(sites, false);
+            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expectedAuxImage);
         });
     });
 }); 
