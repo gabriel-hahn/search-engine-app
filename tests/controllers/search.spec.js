@@ -1,18 +1,18 @@
 // Needs polyfill because I used async functions.
-import RequestUtil from '../../src/utils/RequestUtil';
+import RequestUtil from "../../src/utils/RequestUtil";
 
-import 'babel-polyfill';
-import { expect } from 'chai';
-import sinon from 'sinon';
-import { jsdom } from 'jsdom';
+import "babel-polyfill";
+import { expect } from "chai";
+import sinon from "sinon";
+import { jsdom } from "jsdom";
 
-import SearchController from '../../src/controllers/SearchController';
+import SearchController from "../../src/controllers/SearchController";
 
-describe('Search', () => {
+describe("Search", () => {
     let search;
     let requests;
 
-    let URL_DOG = 'http://localhost:8080?term=Dog&page=3';
+    let URL_DOG = "http://localhost:8080?term=Dog&page=3";
 
     let images = [
         {
@@ -94,7 +94,7 @@ describe('Search', () => {
 
     beforeEach(() => {
         jsdom.env({
-            url: URL_DOG, 'html': `<html>
+            url: URL_DOG, "html": `<html>
                 <head></head>
                 <body>
                     <input type="text" class="searchBox" name="term" value="">
@@ -150,218 +150,218 @@ describe('Search', () => {
         sinon.restore();
     });
 
-    describe('Smoke tests', () => {
-        it('Should exists changeLinkSelection method', () => {
+    describe("Smoke tests", () => {
+        it("Should exists changeLinkSelection method", () => {
             expect(search.changeLinkSelection).to.exist;
         });
 
-        it('Should exists startEvents method', () => {
+        it("Should exists startEvents method", () => {
             expect(search.startEvents).to.exist;
         });
 
-        it('Should exists getTerm method', () => {
+        it("Should exists getTerm method", () => {
             expect(search.getTerm).to.exist;
         });
 
-        it('Should exists setPaginationCount method', () => {
+        it("Should exists setPaginationCount method", () => {
             expect(search.setPaginationCount).to.exist;
         });
 
-        it('Should exists getPage method', () => {
+        it("Should exists getPage method", () => {
             expect(search.getPage).to.exist;
         });
 
-        it('Should exists searchLinks method', () => {
+        it("Should exists searchLinks method", () => {
             expect(search.searchLinks).to.exist;
         });
 
-        it('Should exists getCountByTerm method', () => {
+        it("Should exists getCountByTerm method", () => {
             expect(search.getCountByTerm).to.exist;
         });
 
-        it('Should exists setCountResults method', () => {
+        it("Should exists setCountResults method", () => {
             expect(search.setCountResults).to.exist;
         });
 
-        it('Should exists includeResults method', () => {
+        it("Should exists includeResults method", () => {
             expect(search.includeResults).to.exist;
         });
 
-        it('Should exists setTermResearched method', () => {
+        it("Should exists setTermResearched method", () => {
             expect(search.setTermResearched).to.exist;
         });
 
-        it('Should exists getLinkHrefElement method', () => {
+        it("Should exists getLinkHrefElement method", () => {
             expect(search.getLinkHrefElement).to.exist;
         });
 
-        it('Should exists increaseClicks method', () => {
+        it("Should exists increaseClicks method", () => {
             expect(search.increaseClicks).to.exist;
         });
 
-        it('Should exists trimField method', () => {
+        it("Should exists trimField method", () => {
             expect(search.trimField).to.exist;
         });
 
-        it('Should exists cleanResults method', () => {
+        it("Should exists cleanResults method", () => {
             expect(search.cleanResults).to.exist;
         });
     });
 
-    describe('Request methods', () => {
-        it('Should call request once', () => {
+    describe("Request methods", () => {
+        it("Should call request once", () => {
             search.searchLinks(true);
             expect(requests.length).to.be.eq(1);
         });
 
-        it('Should call request twice', () => {
+        it("Should call request twice", () => {
             search.searchLinks(true);
             search.searchLinks(false);
             expect(requests.length).to.be.eq(2);
         });
     });
 
-    describe('List of results', () => {
-        it('Should set resuls correctly - 2 items', () => {
-            sinon.stub(RequestUtil, 'get').resolves(JSON.stringify(images));
+    describe("List of results", () => {
+        it("Should set resuls correctly - 2 items", () => {
+            sinon.stub(RequestUtil, "get").resolves(JSON.stringify(images));
             search.searchLinks().then(r => {
                 expect(r).to.be.eql(images);
             });
         });
     });
 
-    describe('Count by term', () => {
-        it('Should set 2 counts', async () => {
-            sinon.stub(RequestUtil, 'get').resolves(sites.length);
+    describe("Count by term", () => {
+        it("Should set 2 counts", async () => {
+            sinon.stub(RequestUtil, "get").resolves(sites.length);
             await search.getCountByTerm();
-            let countEl = document.getElementsByClassName('resultsCount');
-            expect(countEl[0].innerHTML.toString()).to.be.eql('2 results found');
+            let countEl = document.getElementsByClassName("resultsCount");
+            expect(countEl[0].innerHTML.toString()).to.be.eql("2 results found");
         });
     });
 
-    describe('Count method', () => {
-        it('Should set count results to 2', () => {
+    describe("Count method", () => {
+        it("Should set count results to 2", () => {
             expect(search.setCountResults(2)).to.be.eq(2);
         });
 
-        it('Should set count results to 3', () => {
+        it("Should set count results to 3", () => {
             expect(search.setCountResults(3)).to.be.eq(3);
         });
     });
 
-    describe('Correct Href to pagination elements', () => {
-        it('Should include link to page 3', () => {
+    describe("Correct Href to pagination elements", () => {
+        it("Should include link to page 3", () => {
             let href = search.getLinkHrefElement(3);
-            expect(href).to.be.eq('http://localhost:8080/?term=Dog&page=3');
+            expect(href).to.be.eq("http://localhost:8080/?term=Dog&page=3");
         });
     });
 
-    describe('Increase clicks values', () => {
-        it('Should return the same site after increse clicks number', () => {
-            sinon.stub(RequestUtil, 'put').resolves(sites[0]);
+    describe("Increase clicks values", () => {
+        it("Should return the same site after increse clicks number", () => {
+            sinon.stub(RequestUtil, "put").resolves(sites[0]);
             search.increaseClicks(sites[0]._id).then(r => {
                 expect(r).to.be.eql(sites[0]);
             });
         });
     });
 
-    describe('Tabs behavior', () => {
-        it('Should activate Site tab', () => {
-            let linkSitesEl = document.getElementById('sitesLink');
-            let linkImagesEl = document.getElementById('imagesLink');
+    describe("Tabs behavior", () => {
+        it("Should activate Site tab", () => {
+            let linkSitesEl = document.getElementById("sitesLink");
+            let linkImagesEl = document.getElementById("imagesLink");
 
-            linkSitesEl.classList.remove('active');
-            linkImagesEl.classList.add('active');
+            linkSitesEl.classList.remove("active");
+            linkImagesEl.classList.add("active");
 
             search.changeLinkSelection(true);
-            expect(search._searchLinkSites.classList.value).to.be.eq('active');
-            expect(search._searchLinkImages.classList.value).to.be.eq('');
+            expect(search._searchLinkSites.classList.value).to.be.eq("active");
+            expect(search._searchLinkImages.classList.value).to.be.eq("");
         });
 
-        it('Should activate Image tab', () => {
+        it("Should activate Image tab", () => {
             search.changeLinkSelection();
-            expect(search._searchLinkImages.classList.value).to.be.eq('active');
-            expect(search._searchLinkSites.classList.value).to.be.eq('');
+            expect(search._searchLinkImages.classList.value).to.be.eq("active");
+            expect(search._searchLinkSites.classList.value).to.be.eq("");
         });
     });
 
-    describe('Get term', () => {
-        it('Should return Dog', () => {
-            expect(search.getTerm()).to.be.eq('Dog');
+    describe("Get term", () => {
+        it("Should return Dog", () => {
+            expect(search.getTerm()).to.be.eq("Dog");
         });
     });
 
-    describe('Get page', () => {
-        it('Should return 3', () => {
-            expect(search.getPage()).to.be.eq('3');
+    describe("Get page", () => {
+        it("Should return 3", () => {
+            expect(search.getPage()).to.be.eq("3");
         });
     });
 
-    describe('Pagination control', () => {
-        it('Should insert 1 pagination elements', () => {
+    describe("Pagination control", () => {
+        it("Should insert 1 pagination elements", () => {
             search.setPaginationCount(15);
-            let paginationEl = document.getElementsByClassName('pageImg');
+            let paginationEl = document.getElementsByClassName("pageImg");
             expect(paginationEl.length).to.be.eq(1);
         });
 
-        it('Should insert 5 pagination elements', () => {
+        it("Should insert 5 pagination elements", () => {
             search.setPaginationCount(85);
-            let paginationEl = document.getElementsByClassName('pageImg');
+            let paginationEl = document.getElementsByClassName("pageImg");
             expect(paginationEl.length).to.be.eq(5);
         });
 
-        it('Should insert 10 pagination elements, even using more than 200 results', () => {
+        it("Should insert 10 pagination elements, even using more than 200 results", () => {
             search.setPaginationCount(240);
-            let paginationEl = document.getElementsByClassName('pageImg');
+            let paginationEl = document.getElementsByClassName("pageImg");
             expect(paginationEl.length).to.be.eq(10);
         });
     });
 
-    describe('Input text box', () => {
-        it('Should set "Dog" as a term', () => {
+    describe("Input text box", () => {
+        it("Should set \`Dog\` as a term", () => {
             search.setTermResearched(search.getTerm());
-            let inputEl = document.getElementsByClassName('searchBox')[0];
-            expect(inputEl.value).to.be.eq('Dog');
+            let inputEl = document.getElementsByClassName("searchBox")[0];
+            expect(inputEl.value).to.be.eq("Dog");
         });
     });
 
-    describe('Trim function', () => {
-        it('Should trim "String test" to "String t..."', () => {
-            let term = search.trimField('String test', 8);
-            expect(term).to.be.eq('String t...');
+    describe("Trim function", () => {
+        it("Should trim \`String test\` to \`String t...\`", () => {
+            let term = search.trimField("String test", 8);
+            expect(term).to.be.eq("String t...");
         });
 
-        it('Should trim "String test" to "String t"', () => {
-            let term = search.trimField('String t', 8);
-            expect(term).to.be.eq('String t');
+        it("Should trim \`String test\` to \`String t\`", () => {
+            let term = search.trimField("String t", 8);
+            expect(term).to.be.eq("String t");
         });
 
-        it('Should return empty string', () => {
+        it("Should return empty string", () => {
             let term = search.trimField(null, 10);
             expect(term).to.be.empty;
         });
     });
 
-    describe('Cleaner method', () => {
-        it('Should clear all results', () => {
+    describe("Cleaner method", () => {
+        it("Should clear all results", () => {
             search.includeResults(sites, true);
-            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
             search.cleanResults();
-            let expected = '<p class="resultsCount"></p>';
+            let expected = "<p class=\`resultsCount\`></p>";
             expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
         });
     });
 
-    describe('Append results', () => {
-        it('Should insert all site results', () => {
+    describe("Append results", () => {
+        it("Should insert all site results", () => {
             search.includeResults(sites, true);
-            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
             expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expectedAuxSite);
         });
 
-        it('Should insert all image results', () => {
+        it("Should insert all image results", () => {
             search.includeResults(sites, false);
-            let resultsEl = document.getElementsByClassName('mainResultsSection')[0];
+            let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
             expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expectedAuxImage);
         });
     });
