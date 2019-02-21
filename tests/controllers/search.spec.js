@@ -347,7 +347,7 @@ describe("Search", () => {
             search.includeResults(sites, true);
             let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
             search.cleanResults();
-            let expected = "<p class=\`resultsCount\`></p>";
+            let expected = `<p class="resultsCount"></p>`;
             expect(resultsEl.innerHTML.toString().trim()).to.be.eq(expected);
         });
     });
