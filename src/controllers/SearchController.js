@@ -32,13 +32,13 @@ export default class SearchController {
      */
     startEvents() {
         window.onload = () => {
-            this._searchLinkSites.addEventListener("click", e => {
+            this._searchLinkSites.addEventListener("click", (e) => {
                 e.preventDefault();
                 this.changeLinkSelection(true);
                 this.searchLinks(true);
             });
 
-            this._searchLinkImages.addEventListener("click", e => {
+            this._searchLinkImages.addEventListener("click", (e) => {
                 e.preventDefault();
                 this.changeLinkSelection(false);
                 this.searchLinks(false);
@@ -115,7 +115,7 @@ export default class SearchController {
         this.setTermResearched(this._term);
 
         //Get all links or images about the term researched.
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? "site" : "image").concat("/getByTerm/").concat(this._term), this._page).then(data => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? "site" : "image").concat("/getByTerm/").concat(this._term), this._page).then((data) => {
             let response = JSON.parse(data);
             this.cleanResults();
             this.includeResults(response, isSites);
@@ -134,7 +134,7 @@ export default class SearchController {
      * Get count of all items by term.
      */
     getCountByTerm() {
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? "site" : "image").concat("/getCountByTerm/").concat(this._term)).then(count => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? "site" : "image").concat("/getCountByTerm/").concat(this._term)).then((count) => {
             this.setCountResults(count);
             this.setPaginationCount(count);
         });
@@ -185,7 +185,7 @@ export default class SearchController {
 
                 a.href = this.getLinkHrefElement(pageIndex);
 
-                [...childrens].forEach(e => a.appendChild(e));
+                [...childrens].forEach((e) => a.appendChild(e));
                 nodeCloned.appendChild(a);
             }
 
@@ -272,7 +272,7 @@ export default class SearchController {
                 linkEl.setAttribute("id", result._id);
 
                 // Event to increase clicks number.
-                linkEl.addEventListener("click", e => {
+                linkEl.addEventListener("click", (e) => {
                     this.increaseClicks(e.target.getAttribute("id"));
                 });
             }
@@ -304,7 +304,9 @@ export default class SearchController {
      * @param {Limit of characteres} limit 
      */
     trimField(value, limit) {
-        if (!value) return "";
+        if (!value) {
+            return "";
+        }
 
         let dots = value.length > limit ? "..." : "";
         return value.substring(0, limit).concat(dots);
