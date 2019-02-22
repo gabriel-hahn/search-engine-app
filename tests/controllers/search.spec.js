@@ -206,6 +206,10 @@ describe("Search", () => {
         it("Should exists cleanResults method", () => {
             expect(search.cleanResults).to.exist;
         });
+
+        it("Should exists hiddenPagination method", () => {
+            expect(search.hiddenPagination).to.exist;
+        });
     });
 
     describe("Request methods", () => {
@@ -262,6 +266,20 @@ describe("Search", () => {
             search.increaseClicks(sites[0]._id).then(r => {
                 expect(r).to.be.eql(sites[0]);
             });
+        });
+    });
+
+    describe ('Hide pagination', () => {
+        it ('Should hide pagination element', () => {
+            search.hiddenPagination(true);
+            let paginationEl = document.getElementsByClassName("paginationContainer")[0];
+            expect(paginationEl.style.display).to.be.eq("none");
+        });
+
+        it ('Should not hide pagination element', () => {
+            search.hiddenPagination(false);
+            let paginationEl = document.getElementsByClassName("paginationContainer")[0];
+            expect(paginationEl.style.display).to.be.eq("");
         });
     });
 

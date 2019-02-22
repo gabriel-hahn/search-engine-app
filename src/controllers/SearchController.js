@@ -21,6 +21,7 @@ export default class SearchController {
         this.trimField = this.trimField.bind(this);
         this.increaseClicks = this.increaseClicks.bind(this);
         this.cleanResults = this.cleanResults.bind(this);
+        this.hiddenPagination = this.hiddenPagination.bind(this);
 
         this._currentPage = this.getPage();
 
@@ -118,8 +119,13 @@ export default class SearchController {
         return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(isSites ? "site" : "image").concat("/getByTerm/").concat(this._term), this._page).then((data) => {
             let response = JSON.parse(data);
             this.cleanResults();
-            this.includeResults(response, isSites);
-            this.getCountByTerm();
+            this.includeResults(response, this._isSites);
+
+            if (this._isSites) {
+                this.getCountByTerm();
+            }
+
+            this.hiddenPagination(!this._isSites);
 
             return response;
         });
@@ -134,10 +140,15 @@ export default class SearchController {
      * Get count of all items by term.
      */
     getCountByTerm() {
-        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat(this._isSites ? "site" : "image").concat("/getCountByTerm/").concat(this._term)).then((count) => {
+        return RequestUtil.get(ConfigUtil.DEFAULT_API.concat("site").concat("/getCountByTerm/").concat(this._term)).then((count) => {
             this.setCountResults(count);
             this.setPaginationCount(count);
         });
+    }
+
+    hiddenPagination(hide) {
+        let paginationEl = document.getElementsByClassName("paginationContainer")[0];
+        paginationEl.style.display = hide ? "none" : "";
     }
 
     /**
@@ -287,7 +298,7 @@ export default class SearchController {
             let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
 
             let Masonry = require("masonry-layout");
-            
+
             // It'll organize images on screen.
             new Masonry(resultsEl, {
                 itemSelector: ".gridItem",
