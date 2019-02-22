@@ -131,6 +131,9 @@ export default class SearchController {
         });
     }
 
+    /**
+     * Clean results.
+     */
     cleanResults() {
         let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
         resultsEl.innerHTML = '<p class="resultsCount"></p>';
@@ -266,7 +269,7 @@ export default class SearchController {
                 let displayText = result.title ? result.title : (result.alt ? result.alt : result.imageUrl);
 
                 element = `<div class="gridItem">
-                        <a href="${result.imageUrl}">
+                        <a href="${result.imageUrl}" data-fancybox data-caption="${displayText}">
                             <img src="${result.imageUrl}">
                             <span class="details">${displayText}</span>
                         </a>
@@ -289,6 +292,10 @@ export default class SearchController {
             }
             else {
                 divEl.classList.add("imageResults");
+                divEl.childNodes[0].setAttribute("id", result._id);
+                divEl.childNodes[0].addEventListener("click", (e) => {
+                    this.increaseClicks(e.target.parentNode.parentNode.getAttribute("id"));
+                });
             }
 
             resultsEl.appendChild(divEl);
@@ -305,6 +312,19 @@ export default class SearchController {
                 columnWidth: 200,
                 gutter: 5
             });
+
+            // Add fancybox to images, shows a animation when click on some image.
+            [...document.getElementsByClassName('data-fancybox')].forEach(e => e.fancybox({
+                caption: function (instance, item) {
+                    var caption = $(this).data('caption') || '';
+
+                    if (item.type === 'image') {
+                        caption = (caption.length ? caption + '<br />' : '') + '<a href="' + item.src + '">View image</a>';
+                    }
+
+                    return caption;
+                }
+            }));
         }
     }
 
