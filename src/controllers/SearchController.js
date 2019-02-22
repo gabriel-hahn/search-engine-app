@@ -248,7 +248,7 @@ export default class SearchController {
     includeResults(results, isSites) {
         let resultsEl = document.getElementsByClassName("mainResultsSection")[0];
 
-        results.forEach(result => {
+        results.forEach((result) => {
             let element;
 
             if (isSites) {
@@ -314,12 +314,12 @@ export default class SearchController {
             });
 
             // Add fancybox to images, shows a animation when click on some image.
-            [...document.getElementsByClassName('data-fancybox')].forEach(e => e.fancybox({
+            [...document.getElementsByClassName("data-fancybox")].forEach((e) => e.fancybox({
                 caption: function (instance, item) {
-                    var caption = $(this).data('caption') || '';
+                    var caption = $(this).data("caption") || "";
 
-                    if (item.type === 'image') {
-                        caption = (caption.length ? caption + '<br />' : '') + '<a href="' + item.src + '">View image</a>';
+                    if (item.type === "image") {
+                        caption = (caption.length ? caption + "<br />" : "") + '<a href="' + item.src + '">View image</a>';
                     }
 
                     return caption;

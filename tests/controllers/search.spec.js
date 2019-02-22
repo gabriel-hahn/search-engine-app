@@ -228,7 +228,7 @@ describe("Search", () => {
     describe("List of results", () => {
         it("Should set resuls correctly - 2 items", () => {
             sinon.stub(RequestUtil, "get").resolves(JSON.stringify(images));
-            search.searchLinks().then(r => {
+            search.searchLinks().then((r) => {
                 expect(r).to.be.eql(images);
             });
         });
@@ -263,20 +263,20 @@ describe("Search", () => {
     describe("Increase clicks values", () => {
         it("Should return the same site after increse clicks number", () => {
             sinon.stub(RequestUtil, "put").resolves(sites[0]);
-            search.increaseClicks(sites[0]._id).then(r => {
+            search.increaseClicks(sites[0]._id).then((r) => {
                 expect(r).to.be.eql(sites[0]);
             });
         });
     });
 
-    describe ('Hide pagination', () => {
-        it ('Should hide pagination element', () => {
+    describe("Hide pagination", () => {
+        it("Should hide pagination element", () => {
             search.hiddenPagination(true);
             let paginationEl = document.getElementsByClassName("paginationContainer")[0];
             expect(paginationEl.style.display).to.be.eq("none");
         });
 
-        it ('Should not hide pagination element', () => {
+        it("Should not hide pagination element", () => {
             search.hiddenPagination(false);
             let paginationEl = document.getElementsByClassName("paginationContainer")[0];
             expect(paginationEl.style.display).to.be.eq("");

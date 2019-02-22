@@ -7,7 +7,7 @@ export default class RequestUtil {
         return new Promise((resolve, reject) => {
             var ajax = new XMLHttpRequest();
 
-            ajax.open('GET', url);
+            ajax.open("GET", url);
 
             if (page) {
                 let startFrom = (page - 1) * 20;
@@ -30,8 +30,8 @@ export default class RequestUtil {
         return new Promise((resolve, reject) => {
             var ajax = new XMLHttpRequest();
 
-            ajax.open('POST', url);
-            ajax.setRequestHeader('Content-type', 'application/json');
+            ajax.open("POST", url);
+            ajax.setRequestHeader("Content-type", "application/json");
             ajax.send(JSON.stringify(data));
 
             ajax.onload = event => {
@@ -48,8 +48,8 @@ export default class RequestUtil {
         return new Promise((resolve, reject) => {
             var ajax = new XMLHttpRequest();
 
-            ajax.open('PUT', url);
-            ajax.setRequestHeader('Content-type', 'application/json');
+            ajax.open("PUT", url);
+            ajax.setRequestHeader("Content-type", "application/json");
             ajax.send(JSON.stringify(data));
 
             ajax.onload = event => {

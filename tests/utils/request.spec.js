@@ -7,7 +7,7 @@ import RequestUtil from "../../src/utils/RequestUtil";
 
 describe("Request Util", () => {
     let requests = [];
-    let URL = 'http://localhost:9090?term="Dog"';
+    let URL = "http://localhost:9090?term=Dog";
 
     beforeEach(() => {
         global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
