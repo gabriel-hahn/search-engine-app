@@ -1,2 +1,2 @@
-import SearchController from './controllers/SearchController';
+import SearchController from "./controllers/SearchController";
 window.app = new SearchController();
