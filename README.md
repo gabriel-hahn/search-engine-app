@@ -6,7 +6,6 @@ Application which uses [Search Engine API](https://github.com/gabriel-hahn/searc
 
 - Pure JavaScript.
 - Unit Tests.
-- Heroku.
 
 ## Contributing
 
