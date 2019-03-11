@@ -40,6 +40,7 @@ npm run test:coverage
 ## Something in the future?
 
 - [ ] Deploy a demo of this project.
+- [ ] +95% of unit tests coverage.
 
 ## Contributing
 
