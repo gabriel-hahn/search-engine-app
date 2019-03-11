@@ -4,8 +4,38 @@
 
 Application which uses [Search Engine API](https://github.com/gabriel-hahn/search-engine). Pure JavaScript and Unit Tests.
 
-- Pure JavaScript.
-- Unit Tests.
+<p align="center">
+  <img src="https://media.giphy.com/media/vczAjQ4Y74Qck1SGwQ/giphy.gif">
+</p>
+
+## Getting Started
+
+1 - Inside the projects folder, run the follow command to install all NPM dependencies:
+
+```
+npm i
+```
+
+2 - Start the project (local host at 8080):
+
+```
+npm run start
+```
+
+<p align="center">
+  <img src="https://media.giphy.com/media/U7vgFmcHNXk72nryTO/giphy.gif">
+</p>
+
+## Tests
+To run the tests, you can choose between with or without coverage:
+
+```
+npm run test
+```
+
+```
+npm run test:coverage
+```
 
 ## Contributing
 
